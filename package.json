@@ -1,0 +1,25 @@
+{
+    "name": "dlv-system-support",
+    "displayName": "DLV System Support",
+    "description": "An extension for Answer Set Programming and DLV System support",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.69.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "asp",
+            "aliases": ["asp", "asp"],
+            "extensions": [".lp",".asp",".dlv"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "asp",
+            "scopeName": "source.asp",
+            "path": "./syntaxes/asp.tmLanguage.json"
+        }]
+    }
+}

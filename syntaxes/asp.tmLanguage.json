@@ -1,0 +1,128 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "asp",
+	"patterns": [
+		{
+			"include": "#annotations"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#variables"
+		},
+		{
+			"include": "#quoted_strings"
+		},
+		{
+			"include": "#unquoted_strings"
+		},
+		{
+			"include": "#numbers"
+		},
+		{
+			"include": "#aggregates"
+		},
+		{
+			"include": "#negation"
+		},
+		{
+			"include": "#external_predicates"
+		},
+		{
+			"include": "#predicate_conversions"
+		},
+		{
+			"include": "#sql_directives"
+		}
+	],
+	"repository": {
+		"annotations": {
+			"patterns": [{
+				"name": "keyword.control.annotation.asp",
+				"match": "%?@[a-z][a-zA-Z0-9_]*"
+			}]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"include": "#comment"
+				},
+				{
+					"include": "#multi_line_comment"
+				}
+			],
+			"repository": {
+				"comment": {
+					"patterns": [{
+						"name": "comment.asp",
+						"match": "%([^\\*\\n@].*)?\\n"
+					}]
+				},
+				"multi_line_comment": {
+					"patterns": [{
+						"name": "comment.block.asp",
+						"begin": "%\\*",
+						"end": "\\*%"
+					}]
+				}
+			}
+		},
+		"variables": {
+			"patterns": [{
+				"name": "variable.asp",
+				"match": "[A-Z][a-zA-Z0-9_]*"
+			}]
+		},
+		"quoted_strings": {
+			"patterns": [{
+				"name": "string.quoted.asp",
+				"begin": "\"|“",
+				"end": "\"|”"
+			}]
+		},
+		"unquoted_strings": {
+			"patterns": [{
+				"name": "entity.name.tag.asp",
+				"match": "[a-z][a-zA-Z0-9_]*"
+			}]
+		},
+		"numbers": {
+			"patterns": [{
+				"name": "constant.numeric.asp",
+				"match": "(0|[1-9][0-9]*)"
+			}]
+		},
+		"aggregates": {
+			"patterns": [{
+				"name": "keyword.control.asp",
+				"match": "#(count|sum|min|max)\\b"
+			}]
+		},
+		"negation": {
+			"patterns": [{
+				"name": "markup.bold",
+				"match": " not "
+			}]
+		},
+		"external_predicates": {
+			"patterns": [{
+				"name": "support.function.asp",
+				"match": "&[a-z][a-zA-Z0-9_]*"
+			}]
+		},
+		"predicate_conversions": {
+			"patterns": [{
+				"name": "support.function.asp",
+				"match": "#(U_INT|UT_INT|UR_INT|T_INT|R_INT|CONST|Q_CONST)\\b"
+			}]
+		},
+		"sql_directives": {
+			"patterns": [{
+				"name": "support.function.asp",
+				"match": "#(import_sql|export_sql|import_local_sparql|import_remote_sparql)"
+			}]
+		}
+	},
+	"scopeName": "source.asp"
+}
