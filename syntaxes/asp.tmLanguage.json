@@ -102,7 +102,7 @@
 		},
 		"aggregates": {
 			"patterns": [{
-				"name": "keyword.control.asp",
+				"name": "support.function.asp",
 				"match": "#(count|sum|min|max|times)\\b"
 			}]
 		},
@@ -127,7 +127,7 @@
 		"directives": {
 			"patterns": [{
 				"name": "support.function.asp",
-				"match": "#(show|import_sql|export_sql|import_local_sparql|import_remote_sparql)"
+				"match": "#(show|import_sql|export_sql|import_local_sparql|import_remote_sparql)\\b"
 			}]
 		}
 	},
