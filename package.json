@@ -1,18 +1,22 @@
 {
-    "name": "dlv-system-support",
-    "displayName": "DLV System Support",
-    "description": "An extension for Answer Set Programming and DLV System support",
+    "name": "asp-language-support-dlv2",
+    "displayName": "ASP Language Support for DLV2 System",
+    "description": "An extension for Answer Set Programming Language and DLV2 System",
     "version": "0.0.1",
+    "publisher": "Riccardo Carnevali, Francesco Pacenza",
     "engines": {
         "vscode": "^1.69.0"
     },
+    "author": {
+        "name": "Riccardo Carnevali"
+      },
     "categories": [
         "Programming Languages"
     ],
     "contributes": {
         "languages": [{
             "id": "asp",
-            "aliases": ["asp", "asp"],
+            "aliases": ["asp", "ASP-Core-2", "Answer Set Programming"],
             "extensions": [".lp",".asp",".dlv"],
             "configuration": "./language-configuration.json"
         }],
@@ -21,5 +25,15 @@
             "scopeName": "source.asp",
             "path": "./syntaxes/asp.tmLanguage.json"
         }]
-    }
+    },
+    "license": "SEE LICENSE IN LICENSE.txt",
+    "bugs": {
+      "url": "https://github.com/fpacenza/dlv2code/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/fpacenza/dlv2code.git"
+      },
+    "homepage": "https://github.com/fpacenza/dlv2code/blob/main/README.md",
+    "icon": "images/icon.png"
 }
