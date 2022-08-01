@@ -1,8 +1,8 @@
 {
-    "name": "asp-language-support-dlv2",
-    "displayName": "ASP Language Support for DLV2 System",
-    "description": "An extension for Answer Set Programming Language and DLV2 System",
-    "version": "0.0.1",
+	"name": "asp-language-support-dlv2",
+	"displayName": "ASP Language Support for DLV2 System",
+	"description": "An extension for Answer Set Programming and DLV2 System",
+	"version": "0.0.1",
     "publisher": "Riccardo Carnevali, Francesco Pacenza",
     "engines": {
         "vscode": "^1.69.0"
@@ -13,19 +13,95 @@
     "categories": [
         "Programming Languages"
     ],
-    "contributes": {
+	"activationEvents": [
+		"onCommand:asp-language-support-dlv2.computeAllAnswerSets",
+		"onCommand:asp-language-support-dlv2.computeSingleAnswerSet",
+		"onCommand:asp-language-support-dlv2.computeGroundProgram"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "asp-language-support-dlv2.computeAllAnswerSets",
+				"title": "Compute all Answer Sets"
+			},
+			{
+				"command": "asp-language-support-dlv2.computeSingleAnswerSet",
+				"title": "Compute a single Answer Set"
+			},
+			{
+				"command": "asp-language-support-dlv2.computeGroundProgram",
+				"title": "Compute ground program"
+			}
+		],
+		"keybindings":[
+			{
+				"command": "asp-language-support-dlv2.computeAllAnswerSets",
+				"key": "ctrl+shift+a",
+				"mac": "cmd+shift+a",
+				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
+				"command": "asp-language-support-dlv2.computeSingleAnswerSet",
+				"key": "ctrl+shift+s",
+				"mac": "cmd+shift+s",
+				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
+				"command": "asp-language-support-dlv2.computeGroundProgram",
+				"key": "ctrl+shift+g",
+				"mac": "cmd+shift+g",
+				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv",
+					"command": "asp-language-support-dlv2.computeAllAnswerSets"
+				},
+				{
+					"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv",
+					"command": "asp-language-support-dlv2.computeSingleAnswerSet"
+				},
+				{
+					"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv",
+					"command": "asp-language-support-dlv2.computeGroundProgram"
+				}
+			]
+		},
         "languages": [{
             "id": "asp",
             "aliases": ["asp", "ASP-Core-2", "Answer Set Programming"],
             "extensions": [".lp",".asp",".dlv"],
-            "configuration": "./language-configuration.json"
+            "configuration": "./language-configuration.json",
+			"icon": {
+				"light": "./images/icon.png",
+				"dark": "./images/icon.png"
+			}
         }],
         "grammars": [{
             "language": "asp",
             "scopeName": "source.asp",
             "path": "./syntaxes/asp.tmLanguage.json"
         }]
-    },
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "npm run lint",
+		"test": "node ./test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.69.0",
+		"@types/glob": "^7.2.0",
+		"@types/mocha": "^9.1.1",
+		"@types/node": "16.x",
+		"eslint": "^8.18.0",
+		"glob": "^8.0.3",
+		"mocha": "^10.0.0",
+		"typescript": "^4.7.4",
+		"@vscode/test-electron": "^2.1.5"
+	},
     "license": "SEE LICENSE IN LICENSE.txt",
     "bugs": {
       "url": "https://github.com/fpacenza/dlv2code/issues"
@@ -33,7 +109,7 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/fpacenza/dlv2code.git"
-      },
+    },
     "homepage": "https://github.com/fpacenza/dlv2code/blob/main/README.md",
     "icon": "images/icon.png"
 }
