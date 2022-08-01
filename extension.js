@@ -17,7 +17,7 @@ function activate(context) {
 
 	//Currently not very human readable
 	let groundProgramCommand = vscode.commands.registerCommand('asp-language-support-dlv2.computeGroundProgram', function () {
-		let options = ['--mode=idlv'];
+		let options = ['--mode=idlv','--t'];
 		runDLV2(options);
 	})
 
