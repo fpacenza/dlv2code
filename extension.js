@@ -1,10 +1,44 @@
-const path = require('path');
-const vscode = require('vscode');
+	const vscode = require('vscode');
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+
+	function runDLV2(options) {
+
+		if(!vscode.window.activeTextEditor) {
+			vscode.window.showErrorMessage('Cannot execute command: No open file');
+			return;
+		}
+	
+		let pathToFile = vscode.window.activeTextEditor.document.fileName;
+	
+		let pathToDLV2;
+	
+		switch(process.platform) {
+			case "win32":
+				pathToDLV2 = context.asAbsolutePath('bin/dlv2_windows.exe').replace(/ /g, "` ");
+				break;
+	
+			case "darwin":
+				pathToDLV2 = context.asAbsolutePath('bin/dlv2_mac').replace(/ /g, "\\ ");
+				break;
+			
+			default:
+				pathToDLV2 = context.asAbsolutePath('bin/dlv2_linux').replace(/ /g, "\\ ");
+				break;
+		}
+	
+		let terminal = vscode.window.activeTerminal;
+	
+		if(!terminal) terminal = vscode.window.createTerminal();
+		terminal.show();
+	
+		let optionString = options ? options.join(' ') : '';
+	
+		terminal.sendText(pathToDLV2 + ' "' + pathToFile + '" ' + optionString);
+	}
 
 	let allAnswerSetsCommand = vscode.commands.registerCommand('asp-language-support-dlv2.computeAllAnswerSets', function () {
 		let options = ['-n 0'];
@@ -15,7 +49,6 @@ function activate(context) {
 		runDLV2();
 	})
 
-	//Currently not very human readable
 	let groundProgramCommand = vscode.commands.registerCommand('asp-language-support-dlv2.computeGroundProgram', function () {
 		let options = ['--mode=idlv','--t'];
 		runDLV2(options);
@@ -27,25 +60,6 @@ function activate(context) {
 }
 
 function deactivate() {}
-
-function runDLV2(options) {
-
-	if(!vscode.window.activeTextEditor) {
-		vscode.window.showErrorMessage('Cannot execute command: No open file');
-		return;
-	}
-
-	let pathToFile = vscode.window.activeTextEditor.document.fileName;
-
-	let terminal = vscode.window.activeTerminal;
-
-	if(!terminal) terminal = vscode.window.createTerminal();
-	terminal.show();
-
-	let optionString = options ? options.join(' ') : '';
-
-	terminal.sendText("'" + path.resolve('./bin/dlv2') + "' '" + pathToFile + "' " + optionString);
-}
 
 module.exports = {
 	activate,
