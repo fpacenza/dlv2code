@@ -77,8 +77,8 @@
 		"quoted_strings": {
 			"patterns": [{
 				"name": "string.quoted.asp",
-				"begin": "\"|“",
-				"end": "\"|”"
+				"begin": "\"",
+				"end": "\""
 			}]
 		},
 		"unquoted_strings": {

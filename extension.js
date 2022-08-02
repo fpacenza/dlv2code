@@ -44,7 +44,7 @@ function runDLV2(options) {
 
 	let optionString = options ? options.join(' ') : '';
 
-	terminal.sendText(path.resolve('./bin/dlv2') + " " + pathToFile + " " + optionString);
+	terminal.sendText("'" + path.resolve('./bin/dlv2') + "' '" + pathToFile + "' " + optionString);
 }
 
 module.exports = {
