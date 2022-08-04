@@ -14,11 +14,7 @@
         "Programming Languages"
     ],
 	"activationEvents": [
-		"onStartupFinished",
-		"onCommand:asp-language-support-dlv2.computeAllAnswerSets",
-		"onCommand:asp-language-support-dlv2.computeSingleAnswerSet",
-		"onCommand:asp-language-support-dlv2.computeGroundProgram",
-		"onCommand:asp-language-support-dlv2.linkFiles"
+		"onLanguage:asp"
 	],
 	"main": "./extension.js",
 	"contributes": {
@@ -42,8 +38,32 @@
 				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
 			},
 			{
+				"command": "asp-language-support-dlv2.viewAllPools",
+				"title": "View all pools of linked files",
+				"category": "ASP",
+				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
+				"command": "asp-language-support-dlv2.viewCurrentFilePool",
+				"title": "View the current file's pool of linked files",
+				"category": "ASP",
+				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
 				"command": "asp-language-support-dlv2.linkFiles",
 				"title": "Link current file to others",
+				"category": "ASP",
+				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
+				"command": "asp-language-support-dlv2.unlinkFiles",
+				"title": "Unlink current file from all others",
+				"category": "ASP",
+				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
+				"command": "asp-language-support-dlv2.disbandPool",
+				"title": "Disband the current file's pool of linked files",
 				"category": "ASP",
 				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
 			}
@@ -68,9 +88,33 @@
 				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
 			},
 			{
+				"command": "asp-language-support-dlv2.viewAllPools",
+				"key": "ctrl+alt+v",
+				"mac": "cmd+alt+v",
+				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
+				"command": "asp-language-support-dlv2.viewCurrentFilePool",
+				"key": "ctrl+alt+c",
+				"mac": "cmd+alt+c",
+				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
 				"command": "asp-language-support-dlv2.linkFiles",
 				"key": "ctrl+alt+l",
 				"mac": "cmd+alt+l",
+				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
+				"command": "asp-language-support-dlv2.unlinkFiles",
+				"key": "ctrl+alt+u",
+				"mac": "cmd+alt+u",
+				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
+				"command": "asp-language-support-dlv2.disbandPool",
+				"key": "ctrl+alt+k",
+				"mac": "cmd+alt+k",
 				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
 			}
 		],
@@ -100,7 +144,24 @@
 			],
 			"asp-language-support-dlv2.linkings": [
 				{
-					"command": "asp-language-support-dlv2.linkFiles"
+					"command": "asp-language-support-dlv2.viewAllPools",
+					"group": "linkings@1"
+				},
+				{
+					"command": "asp-language-support-dlv2.viewCurrentFilePool",
+					"group": "linkings@2"
+				},
+				{
+					"command": "asp-language-support-dlv2.linkFiles",
+					"group": "linkings@3"
+				},
+				{
+					"command": "asp-language-support-dlv2.unlinkFiles",
+					"group": "linkings@4"
+				},
+				{
+					"command": "asp-language-support-dlv2.disbandPool",
+					"group": "linkings@5"
 				}
 			]
 		},
