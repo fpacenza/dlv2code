@@ -14,43 +14,63 @@
         "Programming Languages"
     ],
 	"activationEvents": [
+		"onStartupFinished",
 		"onCommand:asp-language-support-dlv2.computeAllAnswerSets",
 		"onCommand:asp-language-support-dlv2.computeSingleAnswerSet",
-		"onCommand:asp-language-support-dlv2.computeGroundProgram"
+		"onCommand:asp-language-support-dlv2.computeGroundProgram",
+		"onCommand:asp-language-support-dlv2.linkFiles"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "asp-language-support-dlv2.computeAllAnswerSets",
-				"title": "Compute all Answer Sets"
+				"command": "asp-language-support-dlv2.computeSingleAnswerSet",
+				"title": "Compute a single Answer Set",
+				"category": "ASP",
+				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
 			},
 			{
-				"command": "asp-language-support-dlv2.computeSingleAnswerSet",
-				"title": "Compute a single Answer Set"
+				"command": "asp-language-support-dlv2.computeAllAnswerSets",
+				"title": "Compute all Answer Sets",
+				"category": "ASP",
+				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
 			},
 			{
 				"command": "asp-language-support-dlv2.computeGroundProgram",
-				"title": "Compute ground program"
+				"title": "Compute ground program",
+				"category": "ASP",
+				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
+				"command": "asp-language-support-dlv2.linkFiles",
+				"title": "Link current file to others",
+				"category": "ASP",
+				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
 			}
 		],
 		"keybindings":[
 			{
-				"command": "asp-language-support-dlv2.computeAllAnswerSets",
-				"key": "ctrl+shift+a",
-				"mac": "cmd+shift+a",
+				"command": "asp-language-support-dlv2.computeSingleAnswerSet",
+				"key": "ctrl+alt+s",
+				"mac": "cmd+alt+s",
 				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
 			},
 			{
-				"command": "asp-language-support-dlv2.computeSingleAnswerSet",
-				"key": "ctrl+shift+s",
-				"mac": "cmd+shift+s",
+				"command": "asp-language-support-dlv2.computeAllAnswerSets",
+				"key": "ctrl+alt+a",
+				"mac": "cmd+alt+a",
 				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
 			},
 			{
 				"command": "asp-language-support-dlv2.computeGroundProgram",
-				"key": "ctrl+shift+g",
-				"mac": "cmd+shift+g",
+				"key": "ctrl+alt+g",
+				"mac": "cmd+alt+g",
+				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
+				"command": "asp-language-support-dlv2.linkFiles",
+				"key": "ctrl+alt+l",
+				"mac": "cmd+alt+l",
 				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
 			}
 		],
@@ -58,18 +78,42 @@
 			"editor/context": [
 				{
 					"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv",
-					"command": "asp-language-support-dlv2.computeAllAnswerSets"
+					"submenu": "asp-language-support-dlv2.solvingAndGrounding",
+					"group": "main@1"
 				},
 				{
 					"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv",
+					"submenu": "asp-language-support-dlv2.linkings",
+					"group": "main@2"
+				}
+			],
+			"asp-language-support-dlv2.solvingAndGrounding": [
+				{
 					"command": "asp-language-support-dlv2.computeSingleAnswerSet"
 				},
 				{
-					"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv",
+					"command": "asp-language-support-dlv2.computeAllAnswerSets"
+				},
+				{
 					"command": "asp-language-support-dlv2.computeGroundProgram"
+				}
+			],
+			"asp-language-support-dlv2.linkings": [
+				{
+					"command": "asp-language-support-dlv2.linkFiles"
 				}
 			]
 		},
+		"submenus": [
+			{
+				"id": "asp-language-support-dlv2.solvingAndGrounding",
+				"label" : "Solving and grounding"
+			},
+			{
+				"id": "asp-language-support-dlv2.linkings",
+				"label": "Linking"
+			}
+		],
         "languages": [{
             "id": "asp",
             "aliases": ["asp", "ASP-Core-2", "Answer Set Programming"],
