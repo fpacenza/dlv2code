@@ -2,9 +2,10 @@
 	"compilerOptions": {
 		"module": "commonjs",
 		"target": "ES2020",
-		"checkJs": true,  /* Typecheck .js files. */
+		"checkJs": false,
 		"lib": [
-			"ES2020"
+			"ES2020",
+			"DOM"
 		]
 	},
 	"exclude": [

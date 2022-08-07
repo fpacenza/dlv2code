@@ -14,9 +14,10 @@
         "Programming Languages"
     ],
 	"activationEvents": [
-		"onLanguage:asp"
+		"onLanguage:asp",
+		"onView:asp-language-support-dlv2.interface"
 	],
-	"main": "./extension.js",
+	"main": "./scripts/extension.js",
 	"contributes": {
 		"commands": [
 			{
@@ -67,6 +68,7 @@
 				"category": "ASP",
 				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
 			}
+			
 		],
 		"keybindings":[
 			{
@@ -175,6 +177,16 @@
 				"label": "Linking"
 			}
 		],
+		"views": {
+			"explorer": [
+				{
+					"type": "webview",
+					"id": "asp-language-support-dlv2.interface",
+					"name": "DLV2 Advanced options",
+					"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				}
+			]
+		},
         "languages": [{
             "id": "asp",
             "aliases": ["asp", "ASP-Core-2", "Answer Set Programming"],

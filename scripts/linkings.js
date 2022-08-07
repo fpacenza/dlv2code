@@ -1,134 +1,6 @@
+const util = require('./util.js');
 const vscode = require('vscode');
 const fs = require('fs');
-
-/**
- * @param {vscode.ExtensionContext} context
- */
-
- function activate(context) {
-
-	purgeLinkings(context);
-
-	let singleAnswerSetCommand = vscode.commands.registerCommand('asp-language-support-dlv2.computeSingleAnswerSet', function () {
-		computeSingleAnswerSet(context);
-	});
-
-	let allAnswerSetsCommand = vscode.commands.registerCommand('asp-language-support-dlv2.computeAllAnswerSets', function () {
-		computeAllAnswerSets(context);
-	});
-
-	let groundProgramCommand = vscode.commands.registerCommand('asp-language-support-dlv2.computeGroundProgram', function () {
-		computeGroundProgram(context);
-	})
-
-	let linkFilesCommand = vscode.commands.registerCommand("asp-language-support-dlv2.linkFiles", function () {
-		linkFiles(context);
-	});
-
-	let unlinkFilesCommand = vscode.commands.registerCommand("asp-language-support-dlv2.unlinkFiles", function () {
-		unlinkFiles(context);
-	});
-
-	let disbandPoolCommand = vscode.commands.registerCommand("asp-language-support-dlv2.disbandPool", function () {
-		disbandPool(context);
-	});
-
-	let viewAllPoolsCommand = vscode.commands.registerCommand("asp-language-support-dlv2.viewAllPools", function () {
-		viewAllPools(context);
-	});
-
-	let viewCurrentFilePoolCommand = vscode.commands.registerCommand("asp-language-support-dlv2.viewCurrentFilePool", function () {
-		viewCurrentFilePool(context);
-	});
-
-	context.subscriptions.push(allAnswerSetsCommand);
-	context.subscriptions.push(singleAnswerSetCommand);
-	context.subscriptions.push(groundProgramCommand);
-	context.subscriptions.push(linkFilesCommand);
-	context.subscriptions.push(unlinkFilesCommand);
-	context.subscriptions.push(disbandPoolCommand);
-	context.subscriptions.push(viewAllPoolsCommand);
-	context.subscriptions.push(viewCurrentFilePoolCommand);
-}
-
-function deactivate() {}
-
-module.exports = {
-	activate,
-	deactivate
-}
-
-//Checks if there is a file .asp .lp or .dlv open in the editor
-function checkCurrentFile() {
-	if(!vscode.window.activeTextEditor) {
-		vscode.window.showErrorMessage('Cannot execute command: No open file');
-		return false;
-	}
-
-	if(!(/.*\.(lp|asp|dlv)$/.test(vscode.window.activeTextEditor.document.fileName))) {
-		vscode.window.showErrorMessage("The file with focus (" + vscode.window.activeTextEditor.document.fileName + ") is not a .asp, .lp or .dlv file");
-		return false;
-	}
-
-	return true;
-}
-
-//Calls the DLV2 executable on the currently active file and on the files linked to it with the specified options
-function runDLV2(context, options) {
-
-	if(!checkCurrentFile()) return;
-
-	let pathToFile = vscode.window.activeTextEditor.document.fileName;
-
-	//Checks if there are files linked to the currently active file 
-	let linkings = purgeLinkings(context, pathToFile);
-	if(!linkings) return;
-	let reverseLinkings = linkings['reverseLinkings'];
-	let linkedFiles = [pathToFile];
-	if(pathToFile in linkings) {
-		linkedFiles = reverseLinkings[linkings[pathToFile]];
-	}
-	linkedFiles.forEach((file, index) =>{
-		linkedFiles[index] = '"' + file + '"';
-	})
-
-	//Gets the path to the DLV2 executable based on the os
-	let pathToDLV2;
-	switch(process.platform) {
-		case "win32":
-			pathToDLV2 = context.asAbsolutePath('bin/dlv2_windows.exe').replace(/ /g, "` ");
-			break;
-
-		case "darwin":
-			pathToDLV2 = context.asAbsolutePath('bin/dlv2_mac').replace(/ /g, "\\ ");
-			break;
-		
-		default:
-			pathToDLV2 = context.asAbsolutePath('bin/dlv2_linux').replace(/ /g, "\\ ");
-			break;
-	}
-
-	//Runs the DLV2 executable in the terminal
-	let terminal = vscode.window.activeTerminal;
-	if(!terminal) terminal = vscode.window.createTerminal();
-	terminal.show();
-	let optionString = options ? options.join(' ') : '';
-	terminal.sendText(pathToDLV2 + " " + linkedFiles.join(' ') + " " + optionString);
-}
-
-function computeSingleAnswerSet(context) {
-	runDLV2(context);
-}
-
-function computeAllAnswerSets(context) {
-	let options = ['-n 0'];
-	runDLV2(context, options);
-}
-
-function computeGroundProgram(context) {
-	let options = ['--mode=idlv','--t'];
-	runDLV2(context, options);
-}
 
 //Reads the file linkings.json and returns a dictionary or undefined if it failed to read the file
 //linkings.json has entries in the form "path_to_file" : "pool_n" where n is a number identifying the pool of linked files
@@ -209,14 +81,13 @@ function purgeLinkings(context, filepath) {
 		}
 	}
 
-	linkings['reverseLinkings'] = reverseLinkings;
 	writeLinkings(context, linkings);
 
 	return linkings;
 }
 
 async function linkFiles(context) {
-	if(!checkCurrentFile()) return;
+	if(!util.checkCurrentFile()) return;
 
 	let pathToCurrentFile = vscode.window.activeTextEditor.document.fileName;
 
@@ -282,9 +153,8 @@ async function linkFiles(context) {
 	}
 	else {
 		//Moves every linked file from its pool to the biggest pool
-		for (const [pool, value] of Object.entries(poolsToMerge)) {
+		for (const [pool, filesToMerge] of Object.entries(poolsToMerge)) {
 			if(pool != biggestPool) {
-				let filesToMerge = reverseLinkings[pool];
 
 				filesToMerge.forEach(file => {
 					if(file != pathToCurrentFile) {
@@ -310,7 +180,7 @@ async function linkFiles(context) {
 
 //Unlinks the currently active file from all other files
 async function unlinkFiles(context) {
-	if(!checkCurrentFile()) return;
+	if(!util.checkCurrentFile()) return;
 
 	let linkings = readLinkings(context);
 	if(!linkings) return;
@@ -333,17 +203,16 @@ async function unlinkFiles(context) {
 	}
 	//Otherwise just removes the currently active file from the pool
 	else {
-		reverseLinkings[linkings[pathToCurrentFile]].splice(linkedFiles.indexOf(pathToCurrentFile), 1);
+		linkedFiles.splice(linkedFiles.indexOf(pathToCurrentFile), 1);
 		delete linkings[pathToCurrentFile];
 	}
-	linkings['reverseLinkings'] = reverseLinkings;
 
 	writeLinkings(context, linkings);
 	vscode.window.showInformationMessage("The currently active file has been successfully unlinked from any other files");
 }
 
 async function disbandPool(context) {
-	if(!checkCurrentFile()) return;
+	if(!util.checkCurrentFile()) return;
 
 	let answer = await vscode.window.showWarningMessage("Are you sure you want to continue?", {"modal": true, "detail":"This operation will unlink this file and all files linked to it from each other."}, "Yes", "No")
 
@@ -368,7 +237,6 @@ async function disbandPool(context) {
 	})
 
 	delete reverseLinkings[pool];
-	linkings['reverseLinkings'] = reverseLinkings;
 
 	writeLinkings(context, linkings);
 
@@ -400,7 +268,7 @@ function viewAllPools(context) {
 }
 
 function viewCurrentFilePool(context) {
-	if(!checkCurrentFile()) return;
+	if(!util.checkCurrentFile()) return;
 
 	let linkings = readLinkings(context);
 	if(!linkings) return;
@@ -421,3 +289,14 @@ function viewCurrentFilePool(context) {
 		outputChannel.appendLine(file);
 	});
 }
+
+module.exports = {
+    readLinkings,
+    writeLinkings,
+    purgeLinkings,
+    linkFiles,
+    unlinkFiles,
+    disbandPool,
+    viewAllPools,
+    viewCurrentFilePool
+};
