@@ -17,7 +17,7 @@
 		"onLanguage:asp",
 		"onView:asp-language-support-dlv2.interface"
 	],
-	"main": "./scripts/extension.js",
+	"main": "./src/extension.js",
 	"contributes": {
 		"commands": [
 			{

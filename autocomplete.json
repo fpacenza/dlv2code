@@ -1,0 +1,228 @@
+{
+    "#":[
+            {
+                "label": "show",
+                "snippet": "show ${1:p}/${2:n}",
+                "detail": "(directive) #show p/n",
+                "documentation": "Shows only the predicates with specified predicate name and arity\n\n@param `p`: The predicate name of the predicates to show\n\n@param `n`: The arity of the predicates to show"
+            },
+            {
+                "label": "import_sql",
+                "snippet": "import_sql(${1:databasename},\"${2:username}\",\"${3:password}\",\"${4:query}\",${5:predname})",
+                "detail": "(directive) #import_sql(databasename,\"username\",\"password\",\"query\",predname[,typeConv])",
+                "documentation": "Reads tuples from a table of a relational database and stores them as facts (EDB)\n\n@param `databasename`: The name of the ODBC DSN (Data Source Name)\n\n@param `username`: The name of the user who connects to the database (the string must be enclosed by \"\")\n\n@param `password`: Provides the password for that user (the string must be enclosed by \"\")\n\n@param `query`: An SQL statement that constructs the table that will be imported (the string must be enclosed by \"\")\n\n@param `predname`: The predicate name of the predicate that will be imported\n\n@param `typeConv` *OPTIONAL*: Specifies the conversion for mapping DBMS data types to I-DLV data type; it provides a conversion for each column imported by the database. It is a string with the following syntax: type: Conv [, Conv], where \"type:\" is a string constant and Conv is one of several conversion types:\n\n* U_INT: the column is converted to an unsigned integer\n\n* UT_INT: the column is truncated to an unsigned integer\n\n* UR_INT: the column is rounded to an unsigned integer\n\n* T_INT: the column is truncated to an integer\n\n* R_INT: the column is rounded to an integer\n\n* CONST: the column is converted to a string without quotes\n\n* Q_CONST: the column is converted to a string with quotes"
+            },
+            {
+                "label": "export_sql",
+                "snippet": "export_sql(${1:databasename},\"${2:username}\",\"${3:password}\",${4:predname},${5:predarity},${6:tablename})",
+                "detail": "(directive) #export_sql(databasename,\"username\",\"password\",predname,predarity,tablename[,\"REPLACE where SQL-Condition\"])",
+                "documentation": "Exports the facts of a predicate to a database. If \"REPLACE where SQL-Condition\" is specified it replaces the tuples in the table tablename for which SQL-Condition holds\n\n@param `databasename`: The name of the database server\n\n@param `username`: The name of the user who connects to the database (the string must be enclosed by \"\")\n\n@param `password`: Provides the password for that user (the string must be enclosed by \"\")\n\n@param `predname`: The predicate name of the predicate that will be exported\n\n@param `predarity`: The arity of the predicate that will be exported\n\n@param `tablename`: The name of the table in which the predicate will be exported\n\n@param `\"REPLACE where SQL-Condition\"` *OPTIONAL*: The keywords REPLACE and where followed by an SQL-Condition which indicates the tuples which shall be deleted from the relational table before the export takes place"
+            },
+            {
+                "label": "import_local_sparql",
+                "snippet": "import_local_sparql(\"${1:rdf_file}\",\"${2:query}\",${3:predname},${4:predarity})",
+                "detail": "(directive) #import_local_sparql(\"rdf_file\",\"query\",predname,predarity[,typeConv])",
+                "documentation": "Imports data from a local RDF file and stores it as facts (EDB)\n\n@param `rdf_file`: The path of the RDF file (the string must be enclosed by \"\")\n\n@param `query`: A SPARQL statement (the string must be enclosed by \"\")\n\n@param `predname`: The predicate name of the predicate that will be imported\n\n@param `predarity`: The arity of the predicate that will be imported\n\n@param `typeConv` *OPTIONAL*: Specifies the conversion for mapping RDF data types to I-DLV data type; it provides a conversion for each column imported by the database. It is a string with the following syntax: type: Conv [, Conv], where \"type:\" is a string constant and Conv is one of several conversion types:\n\n* U_INT: the column is converted to an unsigned integer\n\n* UT_INT: the column is truncated to an unsigned integer\n\n* UR_INT: the column is rounded to an unsigned integer\n\n* T_INT: the column is truncated to an integer\n\n* R_INT: the column is rounded to an integer\n\n* CONST: the column is converted to a string without quotes\n\n* Q_CONST: the column is converted to a string with quotes"
+            },
+            {
+                "label": "import_remote_sparql",
+                "snippet": "import_remote_sparql(\"${1:endpoint_url}\",\"${2:query}\",${3:predname},${4:predarity})",
+                "detail": "(directive) #import_remote_sparql(\"endpoint_url\",\"query\",predname,predarity[,typeConv])",
+                "documentation": "Imports data from a local RDF file and stores it as facts (EDB)\n\n@param `endpoint_url`: The path of the RDF file (the string must be enclosed by \"\")\n\n@param `query`: A SPARQL statement (the string must be enclosed by \"\")\n\n@param `predname`: The predicate name of the predicate that will be imported\n\n@param `predarity`: The arity of the predicate that will be imported\n\n@param `typeConv` *OPTIONAL*: Specifies the conversion for mapping RDF data types to I-DLV data type; it provides a conversion for each column imported by the database. It is a string with the following syntax: type: Conv [, Conv], where \"type:\" is a string constant and Conv is one of several conversion types:\n\n* U_INT: the column is converted to an unsigned integer\n\n* UT_INT: the column is truncated to an unsigned integer\n\n* UR_INT: the column is rounded to an unsigned integer\n\n* T_INT: the column is truncated to an integer\n\n* R_INT: the column is rounded to an integer\n\n* CONST: the column is converted to a string without quotes\n\n* Q_CONST: the column is converted to a string with quotes"
+            },
+            {
+                "label": "external_predicate_conversion",
+                "snippet": "external_predicate_conversion(&${1:p},type:${2:U_INT})",
+                "detail": "(directive) #external_predicate_conversion(&p,type:T_1,...,T_N)",
+                "documentation": "Customizes the mapping policy of an external predicate\n\n@param `&p`: The external predicate with N output terms\n\n@param `T_1,...,T_N`: The sequence of conversion types for the output terms. A conversion type can be:\n\n* U_INT: the output value is converted to an unsigned integer\n\n* UT_INT: the output value is truncated to an unsigned integer\n\n* UR_INT: the output value is rounded to an unsigned integer\n\n* T_INT: the output value is truncated to an integer\n\n* R_INT: the output value is rounded to an integer\n\n* CONST: the output value is converted to a string without quotes\n\n* Q_CONST: the output value is converted to a string with quotes"
+            },
+            {
+                "label": "count",
+                "snippet": "count{${1:X} : ${2:p}(${3:X})}",
+                "detail": "(aggregate function) #count{variables:body}",
+                "documentation": "@param `variables`: A sequence of variables\n\n@param `body`: A sequence of literals whose terms contain variables in the sequence on the left\n\n@return The number of unique instantiations of the sequence of variables"
+            },
+            {
+                "label": "sum",
+                "snippet": "sum{${1:X} : ${2:p}(${3:X})}",
+                "detail": "(aggregate function) #sum{variables:body}",
+                "documentation": "@param `variables`: A sequence of variables\n\n@param `body`: A sequence of literals whose terms contain variables in the sequence on the left\n\n@return The sum of the values given to the first variable in the sequence calculated over all the unique instantiations of the sequence of variables"
+            },
+            {
+                "label": "min",
+                "snippet": "min{${1:X} : ${2:p}(${3:X})}",
+                "detail": "(aggregate function) #min{variables:body}",
+                "documentation": "@param `variables`: A sequence of variables\n\n@param `body`: A sequence of literals whose terms contain variables in the sequence on the left\n\n@return The minimum of the values given to the first variable in the sequence calculated over all the unique instantiations of the sequence of variables"
+            },
+            {
+                "label": "max",
+                "snippet": "max{${1:X} : ${2:p}(${3:X})}",
+                "detail": "(aggregate function) #max{variables:body}",
+                "documentation": "@param `variables`: A sequence of variables\n\n@param `body`: A sequence of literals whose terms contain variables in the sequence on the left\n\n@return The maximum of the values given to the first variable in the sequence calculated over all the unique instantiations of the sequence of variables"
+            }
+        ],
+    "&":[
+            {
+                "label": "abs",
+                "snippet": "abs(${1:X};${2:Z})",
+                "detail": "(external atom) &abs(X;Z)",
+                "documentation": "**Behaviour in assignment**\n\nAssigns the absolute value of X to Z\n\n---\n\n**Behaviour in comparison**\n\nTrue iff Z=|X| holds\n\n---\n\n**Constraints**\n\nX must be an integer"
+            },
+            {
+                "label": "int",
+                "snippet": "int(${1:X},${2:Y};${3:Z})",
+                "detail": "(external atom) &int(X,Y;Z)",
+                "documentation": "**Behaviour in assignment**\n\nGenerates all Z integers such that X<=Z<=Y\n\n---\n\n**Behaviour in comparison**\n\nTrue iff X<=Z<=Y holds\n\n---\n\n*Constraints**\n\nX and Y must be integers and X<=Y"
+            },
+            {
+                "label": "mod",
+                "snippet": "mod(${1:X},${2:Y};${3:Z})", 
+                "detail": "(external atom) &mod(X,Y;Z)",
+                "documentation": "**Behaviour in assignment**\n\nAssigns the result of X%Y to Z\n\n---\n\n**Behaviour in comparison**\n\nTrue iff Z=X%Y\n\n---\n\n**Constraints**\n\nX and Y must be integers and Y!=0"
+            },
+            {
+                "label": "rand",
+                "snippet": "rand(${1:X},${2:Y};${3:Z})",
+                "detail": "(external atom) &rand(X,Y;Z)",
+                "documentation": "**Behaviour in assignment**\n\nAssigns a random number to Z such that X<=Z<=Y\n\n---\n\n**Behaviour in comparison**\n\nTrue iff Z is equal to the selected random number\n\n---\n\n**Constraints**\n\nX and Y must be integers and X<=Y"
+            },
+            {
+                "label": "sum",
+                "snippet": "sum(${1:X},${2:Y};${3:Z})",
+                "detail": "(external atom) &sum(X,Y;Z)",
+                "documentation": "**Behaviour in assignment**\n\nAssigns the result of X+Y to Z\n\n---\n\n**Behaviour in comparison**\n\nTrue iff Z=X+Y holds\n\n---\n\n**Constraints**\n\nX and Y must be integers"
+            },
+            {
+                "label": "append_str",
+                "snippet": "append_str(${1:X},${2:Y};${3:Z})",
+                "detail": "(external atom) &append_str(X,Y;Z)",
+                "documentation": "**Behaviour in assignment**\n\nAppends Y to X, the resulting string is assigned to Z\n\n---\n\n**Behaviour in comparison**\n\nTrue iff Z is equal to the string obtained by appending Y to X\n\n---\n\n**Constraints**\n\nX, Y and Z can be numeric, symbolic or string constants"
+            },
+            {
+                "label": "length_str",
+                "snippet": "length_str(${1:X};${2:Z})",
+                "detail": "(external atom) &length_str(X;Z)",
+                "documentation": "**Behaviour in assignment**\n\nAssigns the length of X to Z\n\n---\n\n**Behaviour in comparison**\n\nTrue iff Z=len(X) holds\n\n---\n\n**Constraints**\n\nX can be a numeric, symbolic or string constant. Z must be an integer"
+            },
+            {
+                "label": "member_str",
+                "snippet": "member_str(${1:X},${2:Y};)",
+                "detail": "(external atom) &member_str(X,Y;)",
+                "documentation": "**Behaviour in assignment**\n\nNone\n\n---\n\n**Behaviour in comparison**\n\nTrue iff Y contains X\n\n---\n\n**Constraints**\n\nX and Y can be numeric, symbolic or string constants"
+            },
+            {
+                "label": "reverse_str",
+                "snippet": "reverse_str(${1:X};${2:Z})",
+                "detail": "(external atom) &reverse_str(X;Z)",
+                "documentation": "**Behaviour in assignment**\n\nComputes the reverse of X, the resulting string is assigned to Z\n\n---\n\n**Behaviour in comparison**\n\nTrue iff Z is equal to the reverse of X\n\n---\n\n**Constraints**\n\nX and Z can be numeric, symbolic or string constants"
+            },
+            {
+                "label": "sub_str",
+                "snippet": "sub_str(${1:X},${2:Y},${3:W};${4:Z})",
+                "detail": "(external atom) &sub_str(X,Y,W;Z)",
+                "documentation": "**Behaviour in assignment**\n\nGenerates a substring of W starting from X to Y, the resulting string is assigned to Z\n\n---\n\n**Behaviour in comparison**\n\nTrue iff Z is equal to the substring of W starting from X to Y\n\n---\n\n**Constraints**\n\nX and Y must be integers such that 1<=X<=Y<=len(W). W must be either a symbolic or string constant. Z must be a string constant"
+            },
+            {
+                "label": "to_qstr",
+                "snippet": "to_qstr(${1:X};${2:Z})",
+                "detail": "(external atom) &to_qstr(X;Z)",
+                "documentation": "**Behaviour in assignment**\n\nIf necessary, transforms X into a \"quoted\" string (i.e. a string constant) and assigns it to Z\n\n---\n\n**Behaviour in comparison**\n\nTrue iff Z is equal to the quoted version of X\n\n---\n\n**Constraints**\n\nX can be a numeric, symbolic or string constant. Z must be a string constant"
+            },
+            {
+                "label": "append",
+                "snippet": "append(${1:L1},${2:L2};${3:LR})",
+                "detail": "(external atom) &append(L1,L2;LR)",
+                "documentation": "**Behaviour in assignment**\n\nAppends L2 to L1, the resulting list is assigned to LR\n\n---\n\n**Behaviour in comparison**\n\nTrue iff LR is equal to the list obtained by appending L2 to L1\n\n---\n\n**Constraints**\n\nL1 and L2 must be list terms. LR must be either a variable or a list term"
+            },
+            {
+                "label": "delNth",
+                "snippet": "delNth(${1:L},${2:P};${3:LR})",
+                "detail": "(external atom) &delNth(L,P;LR)",
+                "documentation": "**Behaviour in assignment**\n\nDeletes the element at position P in L, the resulting list is assigned to LR\n\n---\n\n**Behaviour in comparison**\n\nTrue iff LR is equal to the list obtained by deleting the P-th element from L\n\n---\n\n**Constraints**\n\nL must be a list term. LR must be either a variable or a list term. P must be an integer such that 1<=P<=len(L)"
+            },
+            {
+                "label": "flatten",
+                "snippet": "flatten(${1:L};${2:LR})",
+                "detail": "(external atom) &flatten(L;LR)",
+                "documentation": "**Behaviour in assignment**\n\nFlattens L and assigns the resulting list to LR\n\n---\n\n**Behaviour in comparison**\n\nTrue iff LR is equal to the list obtained by flattening L\n\n---\n\n**Constraints**\n\nL must be a list term. LR must be either a variable or a list term"
+            },
+            {
+                "label": "head",
+                "snippet": "head(${1:L};${2:E})",
+                "detail": "(external atom) &head(L;E)",
+                "documentation": "**Behaviour in assignment**\n\nAssigns the head of L to E\n\n---\n\n**Behaviour in comparison**\n\nTrue iff E is equal to the head of L\n\n---\n\n**Constraints**\n\nL must be a list term"
+            },
+            {
+                "label": "insLast",
+                "snippet": "insLast(${1:L},${2:E};${3:LR})",
+                "detail": "(external atom) &insLast(L,E;LR)",
+                "documentation": "**Behaviour in assignment**\n\nAppends E to L, the resulting list is assigned to LR\n\n---\n\n**Behaviour in comparison**\n\nTrue iff LR is equal to the list obtained by appending E to L\n\n---\n\n**Constraints**\n\nL must be a list term. LR must be either a variable or a list term"
+            },
+            {
+                "label": "insNth",
+                "snippet": "insNth(${1:L},${2:E},${3:P};${4:LR})",
+                "detail": "(external atom) &insNth(L,E,P;LR)",
+                "documentation": "**Behaviour in assignment**\n\nInserts E at position P of L, the resulting list is assigned to LR\n\n---\n\n**Behaviour in comparison**\n\nTrue iff LR is equal to the list obtained by inserting the term E into L at position P\n\n---\n\n**Constraints**\n\nL must be a list term. LR must be either a variable or a list term. P must be an integer such that 1<=P<=len(L)"
+            },
+            {
+                "label": "last",
+                "snippet": "last(${1:L};${2:E})",
+                "detail": "(external atom) &last(L;E)",
+                "documentation": "**Behaviour in assignment**\n\nAssigns the last element of L to E\n\n---\n\n**Behaviour in comparison**\n\nTrue iff E is equal to the last element of L\n\n---\n\n**Constraints**\n\nL must be a list term"
+            },
+            {
+                "label": "length",
+                "snippet": "length(${1:L};${2:Z})",
+                "detail": "(external atom) &length(L;Z)",
+                "documentation": "**Behaviour in assignment**\n\nAssigns the length of L to Z\n\n---\n\n**Behaviour in comparison**\n\nTrue iff Z=len(L) holds\n\n---\n\n**Constraints**\n\nL must be a list term. Z must be either a variable or an integer"
+            },
+            {
+                "label": "member",
+                "snippet": "member(${1:E},${2:L};)",
+                "detail": "(external atom) &member(E,L;)",
+                "documentation": "**Behaviour in assignment**\n\nNone\n\n---\n\n**Behaviour in comparison**\n\nTrue iff L contains the term E\n\n---\n\n**Constraints**\n\nL must be a list term"
+            },
+            {
+                "label": "memberNth",
+                "snippet": "memberNth(${1:L},${2:P};${3:E})",
+                "detail": "(external atom) &memberNth(L,P;E)",
+                "documentation": "**Behaviour in assignment**\n\nAssigns the term at position P of L to E\n\n---\n\n**Behaviour in comparison**\n\nTrue iff E is equal to the element at position P in L\n\n---\n\n**Constraints**\n\nL must be a list term. P must be an integer such that 1<=P<=len(L)"
+            },
+            {
+                "label": "reverse",
+                "snippet": "reverse(${1:L};${2:LR})",
+                "detail": "(external atom) &reverse(L;LR)",
+                "documentation": "**Behaviour in assignment**\n\nComputes the reverse of L, the reversed list is assigned to LR\n\n---\n\n**Behaviour in comparison**\n\nTrue iff LR is equal to the reverse of L\n\n---\n\n**Constraints**\n\nL must be a list term. LR must be either a variable or a list term"
+            },
+            {
+                "label": "reverse_r",
+                "snippet": "reverse_r(${1:L};${2:LR})",
+                "detail": "(external atom) &reverse_r(L;LR)",
+                "documentation": "**Behaviour in assignment**\n\nComputes the reverse of L and of all nested list terms, the reversed L is assigned to LR\n\n---\n\n**Behaviour in comparison**\n\nTrue iff LR is equal to the list obtained by reversing L and all nested list terms\n\n---\n\n**Constraints**\n\nL must be a list term. LR must be either a variable or a list term"
+            },
+            {
+                "label": "delete",
+                "snippet": "delete(${1:E},${2:L};${3:LR})",
+                "detail": "(external atom) &delete(E,L;LR)",
+                "documentation": "**Behaviour in assignment**\n\nDelete all occurrences of E in L, the resulting list is assigned to LR\n\n---\n\n**Behaviour in comparison**\n\nTrue iff LR is equal to the list obtained by removing all occurences of E in L\n\n---\n\n**Constraints**\n\nL must be a list term. LR must be either a variable or a list term"
+            },
+            {
+                "label": "delete_r",
+                "snippet": "delete_r(${1:E},${2:L};${3:LR})",
+                "detail": "(external atom) &delete_r(E,L;LR)",
+                "documentation": "**Behaviour in assignment**\n\nDelete all occurrences of E in L and in all nested list terms, the resulting list is assigned to LR\n\n---\n\n**Behaviour in comparison**\n\nTrue iff LR is equal to the list obtained by removing all occurrences of E in L and in all nested list terms\n\n---\n\n**Constraints**\n\nL must be a list term. LR must be either a variable or a list term"
+            },
+            {
+                "label": "subList",
+                "snippet": "subList(${1:L1},${2:L2};)",
+                "detail": "(external atom) &subList(L1,L2;)",
+                "documentation": "**Behaviour in assignment**\n\nNone\n\n---\n\n**Behaviour in comparison**\n\nTrue iff L1 is a sublist of L2\n\n---\n\n**Constraints**\n\nL1 and L2 must be list terms"
+            },
+            {
+                "label": "tail",
+                "snippet": "tail(${1:L};${2:E})",
+                "detail": "(external atom) &tail(L;E)",
+                "documentation": "**Behaviour in assignment**\n\nAssigns the tail of L to E\n\n---\n\n**Behaviour in comparison**\n\nTrue iff E is equal to the tail of L\n\n---\n\n**Constraints**\n\nL must be a list term"
+            }
+        ]
+}

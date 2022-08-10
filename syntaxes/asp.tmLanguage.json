@@ -71,7 +71,14 @@
 		"variables": {
 			"patterns": [{
 				"name": "variable.asp",
-				"match": "[A-Z][a-zA-Z0-9_]*"
+				"match": "([A-Z][a-zA-Z0-9_]*)",
+				"captures": {
+					"1": {
+						"patterns": [{
+							"include": "#predicate_conversions"
+						}]
+					}
+				}
 			}]
 		},
 		"quoted_strings": {
@@ -103,7 +110,7 @@
 		"aggregates": {
 			"patterns": [{
 				"name": "support.function.asp",
-				"match": "#(count|sum|min|max|times)\\b"
+				"match": "#(count|sum|min|max)\\b"
 			}]
 		},
 		"negation": {
@@ -120,14 +127,14 @@
 		},
 		"predicate_conversions": {
 			"patterns": [{
-				"name": "support.function.asp",
-				"match": "#(U_INT|UT_INT|UR_INT|T_INT|R_INT|CONST|Q_CONST)\\b"
+				"name": "constant.language.asp",
+				"match": "\\b(U_INT|UT_INT|UR_INT|T_INT|R_INT|CONST|Q_CONST)\\b"
 			}]
 		},
 		"directives": {
 			"patterns": [{
 				"name": "support.function.asp",
-				"match": "#(show|import_sql|export_sql|import_local_sparql|import_remote_sparql)\\b"
+				"match": "#(show|external_predicate_conversion|import_sql|export_sql|import_local_sparql|import_remote_sparql)\\b"
 			}]
 		}
 	},

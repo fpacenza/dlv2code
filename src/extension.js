@@ -1,6 +1,6 @@
-const util = require('./util.js')
 const linkings = require('./linkings.js');
 const grouding_solving = require('./grounding-solving.js');
+const autocomplete = require('./autocomplete.js');
 const vscode = require('vscode');
 
 /**
@@ -48,12 +48,7 @@ const vscode = require('vscode');
             thisWebviewView.webview.options={enableScripts:true}
             thisWebviewView.webview.html = getContentForWebview(thisWebviewView.webview, context.extensionUri);
 			thisWebviewView.webview.onDidReceiveMessage(message => {
-				try {
-					grouding_solving.runDLV2(context, message);
-					
-				} catch (error) {
-					thisWebviewView.webview.postMessage("Something went wrong");
-				}
+				grouding_solving.runDLV2(context, message);
 			});
         }
     };
@@ -68,6 +63,10 @@ const vscode = require('vscode');
 	context.subscriptions.push(disbandPoolCommand);
 	context.subscriptions.push(viewAllPoolsCommand);
 	context.subscriptions.push(viewCurrentFilePoolCommand);
+
+	let aspCompletionItemProvider = autocomplete.getASPCompletionItemProvider(context);
+
+	context.subscriptions.push(vscode.languages.registerCompletionItemProvider('asp', aspCompletionItemProvider, '#', '&'));
 }
 
 function deactivate() {}
@@ -113,4 +112,4 @@ function getContentForWebview(webview, extensionUri) {
 		</div>
 	</body>
 	</html>`;
-}	
+}
