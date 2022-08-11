@@ -39,26 +39,26 @@
             {
                 "label": "count",
                 "snippet": "count{${1:X} : ${2:p}(${3:X})}",
-                "detail": "(aggregate function) #count{variables:body}",
-                "documentation": "@param `variables`: A sequence of variables\n\n@param `body`: A sequence of literals whose terms contain variables in the sequence on the left\n\n@return The number of unique instantiations of the sequence of variables"
+                "detail": "(aggregate function) #count{terms:body}",
+                "documentation": "@param `terms`: A sequence of terms\n\n@param `body`: A sequence of literals\n\n@return The number of unique instantiations of the sequence of terms"
             },
             {
                 "label": "sum",
                 "snippet": "sum{${1:X} : ${2:p}(${3:X})}",
-                "detail": "(aggregate function) #sum{variables:body}",
-                "documentation": "@param `variables`: A sequence of variables\n\n@param `body`: A sequence of literals whose terms contain variables in the sequence on the left\n\n@return The sum of the values given to the first variable in the sequence calculated over all the unique instantiations of the sequence of variables"
+                "detail": "(aggregate function) #sum{terms:body}",
+                "documentation": "@param `terms`: A sequence of terms\n\n@param `body`: A sequence of literals\n\n@return The sum of the values given to the first term in the sequence calculated over all the unique instantiations of the sequence of terms"
             },
             {
                 "label": "min",
                 "snippet": "min{${1:X} : ${2:p}(${3:X})}",
-                "detail": "(aggregate function) #min{variables:body}",
-                "documentation": "@param `variables`: A sequence of variables\n\n@param `body`: A sequence of literals whose terms contain variables in the sequence on the left\n\n@return The minimum of the values given to the first variable in the sequence calculated over all the unique instantiations of the sequence of variables"
+                "detail": "(aggregate function) #min{terms:body}",
+                "documentation": "@param `terms`: A sequence of variables\n\n@param `body`: A sequence of literals\n\n@return The minimum of the values given to the first term in the sequence calculated over all the unique instantiations of the sequence of terms"
             },
             {
                 "label": "max",
                 "snippet": "max{${1:X} : ${2:p}(${3:X})}",
-                "detail": "(aggregate function) #max{variables:body}",
-                "documentation": "@param `variables`: A sequence of variables\n\n@param `body`: A sequence of literals whose terms contain variables in the sequence on the left\n\n@return The maximum of the values given to the first variable in the sequence calculated over all the unique instantiations of the sequence of variables"
+                "detail": "(aggregate function) #max{terms:body}",
+                "documentation": "@param `terms`: A sequence of terms\n\n@param `body`: A sequence of literals\n\n@return The maximum of the values given to the first term in the sequence calculated over all the unique instantiations of the sequence of terms"
             }
         ],
     "&":[
