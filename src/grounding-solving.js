@@ -1,6 +1,7 @@
 const util = require('./util.js');
-const vscode = require('vscode');
 const linkings = require('./linkings.js');
+const fs = require('fs');
+const vscode = require('vscode');
 
 //Calls the DLV2 executable on the currently active file and on the files linked to it with the specified options
 function runDLV2(context, options) {
@@ -21,28 +22,31 @@ function runDLV2(context, options) {
 		linkedFiles[index] = '"' + file + '"';
 	})
 
-	//Gets the path to the DLV2 executable based on the os
-	let pathToDLV2;
-	switch(process.platform) {
-		case "win32":
-			pathToDLV2 = context.asAbsolutePath('bin/dlv2_windows.exe').replace(/ /g, "` ");
-			break;
+	let config = util.readConfigFile(context);
+	let pathToDLV2 = config['pathToDLV2'];
 
-		case "darwin":
-			pathToDLV2 = context.asAbsolutePath('bin/dlv2_mac').replace(/ /g, "\\ ");
-			break;
-		
-		default:
-			pathToDLV2 = context.asAbsolutePath('bin/dlv2_linux').replace(/ /g, "\\ ");
-			break;
+	//Uses default executable only if custom executable is not specified or is missing
+	if(pathToDLV2 && pathToDLV2 !== "") {
+		if(!fs.existsSync(pathToDLV2)) {
+			vscode.window.showWarningMessage("The path specified in the file config.json does not exist. Using default DLV2 executable");
+			pathToDLV2 = getPathToDLV2(context);
+		}
 	}
+	else {
+		pathToDLV2 = getPathToDLV2(context);
+	}
+	
+	//Makes dlv2 file executable
+	fs.chmodSync(pathToDLV2, "755");
+	
+	pathToDLV2 = escapeSpaces(pathToDLV2);
 
 	//Runs the DLV2 executable in the terminal
 	let terminal = vscode.window.activeTerminal;
 	if(!terminal) terminal = vscode.window.createTerminal();
-	terminal.show();
 	let optionString = options ? options.join(' ') : '';
-	terminal.sendText(pathToDLV2 + " " + linkedFiles.join(' ') + " " + optionString);
+	terminal.sendText(" " + pathToDLV2 + " " + linkedFiles.join(' ') + " " + optionString);
+	terminal.show();
 }
 
 function computeSingleAnswerSet(context) {
@@ -57,6 +61,43 @@ function computeAllAnswerSets(context) {
 function computeGroundProgram(context) {
 	let options = ['--mode=idlv','--t'];
 	runDLV2(context, options);
+}
+
+//Gets the path to the DLV2 executable based on the os
+function getPathToDLV2(context) {
+	let pathToDLV2;
+	switch(process.platform) {
+		case "win32":
+			pathToDLV2 = context.asAbsolutePath('bin/dlv2_windows.exe');
+			break;
+
+		case "darwin":
+			pathToDLV2 = context.asAbsolutePath('bin/dlv2_mac');
+			break;
+		
+		default:
+			pathToDLV2 = context.asAbsolutePath('bin/dlv2_linux');
+			break;
+	}
+	return pathToDLV2;
+}
+
+//Escapes the spaces in a specified path based on the os
+function escapeSpaces(path) {
+	switch(process.platform) {
+		case "win32":
+			path = path.replace(/ /g, "` ");
+			break;
+
+		case "darwin":
+			path = path.replace(/ /g, "\\ ");
+			break;
+		
+		default:
+			path = path.replace(/ /g, "\\ ");
+			break;
+	}
+	return path;
 }
 
 module.exports = {

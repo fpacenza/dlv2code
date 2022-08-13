@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+const fs = require('fs');
 
 //Checks if there is a file .asp .lp or .dlv open in the editor
 function checkCurrentFile() {
@@ -15,6 +16,21 @@ function checkCurrentFile() {
 	return true;
 }
 
+//Reads the file config.json and returns a dictionary or undefined if it failed to read the file
+function readConfigFile(context) {
+	let configJSON;
+	let config;
+	try {
+		configJSON = fs.readFileSync(context.asAbsolutePath('config.json'), 'utf-8');
+		config = JSON.parse(configJSON);
+	} catch (error) {
+		vscode.window.showErrorMessage("An error occurred while reading the file config.json: " + error);
+		return;
+	}
+	return config;
+}
+
 module.exports = {
-    checkCurrentFile
+    checkCurrentFile,
+	readConfigFile
 }

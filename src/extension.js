@@ -1,6 +1,7 @@
 const linkings = require('./linkings.js');
 const grouding_solving = require('./grounding-solving.js');
 const autocomplete = require('./autocomplete.js');
+const advancedOptions = require('./advancedOptions.js');
 const vscode = require('vscode');
 
 /**
@@ -43,18 +44,7 @@ const vscode = require('vscode');
 		linkings.viewCurrentFilePool(context);
 	});
 
-	let thisProvider={
-        resolveWebviewView:function(thisWebviewView, thisWebviewContext, thisToke){
-            thisWebviewView.webview.options={enableScripts:true}
-            thisWebviewView.webview.html = getContentForWebview(thisWebviewView.webview, context.extensionUri);
-			thisWebviewView.webview.onDidReceiveMessage(message => {
-				grouding_solving.runDLV2(context, message);
-			});
-        }
-    };
-
-	context.subscriptions.push(vscode.window.registerWebviewViewProvider("asp-language-support-dlv2.interface", thisProvider));
-
+	context.subscriptions.push(vscode.window.registerWebviewViewProvider("asp-language-support-dlv2.interface", advancedOptions.getWebviewViewProvider(context)));
 	context.subscriptions.push(allAnswerSetsCommand);
 	context.subscriptions.push(singleAnswerSetCommand);
 	context.subscriptions.push(groundProgramCommand);
@@ -63,53 +53,12 @@ const vscode = require('vscode');
 	context.subscriptions.push(disbandPoolCommand);
 	context.subscriptions.push(viewAllPoolsCommand);
 	context.subscriptions.push(viewCurrentFilePoolCommand);
-
-	let aspCompletionItemProvider = autocomplete.getASPCompletionItemProvider(context);
-
-	context.subscriptions.push(vscode.languages.registerCompletionItemProvider('asp', aspCompletionItemProvider, '#', '&'));
+	context.subscriptions.push(vscode.languages.registerCompletionItemProvider('asp', autocomplete.getASPCompletionItemProvider(context), '#', '&'));
 }
 
-function deactivate() {}
+function deactivate() {}	
 
 module.exports = {
 	activate,
 	deactivate
-}
-
-function getContentForWebview(webview, extensionUri) {
-
-	const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, 'media', 'css', 'reset.css'));
-	const styleVSCodeUri = webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, 'media', 'css', 'vscode.css'));
-	const styleMainUri = webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, "media", "css", "main.css"));
-	const styleIconsUri = webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, "media", "css", "icons.css"));
-	const scriptMainUri = webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, "media", "js", "main.js"))
-
-	return `<!DOCTYPE html>
-	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href="${styleResetUri}" rel="stylesheet">
-		<link href="${styleVSCodeUri}" rel="stylesheet">
-		<link href="${styleMainUri}" rel="stylesheet">
-		<link href="${styleIconsUri}" rel="stylesheet">
-		
-		<title>DLV2 interface</title>
-	</head>
-	<body>
-		<div id="container">
-
-			<label for="add-option-button" class="container-item">Options</label>
-			<button id="add-option-button" class="container-item"><i class="fas fa-plus" id="plus-icon"></i>Add option</button>
-
-			<div id="options"></div>
-
-			<button id="run-button" class="container-item"><i class="fas fa-play" id="play-icon"></i>Run</button>
-
-			<div id="error"></div>
-
-			<script src="${scriptMainUri}"></script>
-		</div>
-	</body>
-	</html>`;
 }
