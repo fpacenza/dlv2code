@@ -33,4 +33,4 @@ function readConfigFile(context) {
 module.exports = {
     checkCurrentFile,
 	readConfigFile
-}
+}	

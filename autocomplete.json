@@ -224,5 +224,6 @@
                 "detail": "(external atom) &tail(L;E)",
                 "documentation": "**Behaviour in assignment**\n\nAssigns the tail of L to E\n\n---\n\n**Behaviour in comparison**\n\nTrue iff E is equal to the tail of L\n\n---\n\n**Constraints**\n\nL must be a list term"
             }
-        ]
+        ],
+    "language-constants": ["U_INT", "UT_INT", "UR_INT", "T_INT", "R_INT", "CONST", "Q_CONST"]
 }

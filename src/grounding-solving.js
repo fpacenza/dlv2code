@@ -21,6 +21,7 @@ function runDLV2(context, options) {
 	linkedFiles.forEach((file, index) =>{
 		linkedFiles[index] = '"' + file + '"';
 	})
+	linkedFiles.push('"' + context.asAbsolutePath('external-atoms.py') + '"');
 
 	let config = util.readConfigFile(context);
 	let pathToDLV2 = config['pathToDLV2'];

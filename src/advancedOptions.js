@@ -1,6 +1,7 @@
 const grouding_solving = require('./grounding-solving.js');
 const vscode = require('vscode');
 
+//Returns a WebviewViewProvider that manages the advanced options webview
 function getWebviewViewProvider(context) {
     return {
         resolveWebviewView:function(thisWebviewView){
@@ -13,6 +14,7 @@ function getWebviewViewProvider(context) {
     };
 }
 
+//Returns the html content of the advanced options webview
 function getContentForWebview(webview, extensionUri) {
 
 	const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, 'media', 'css', 'reset.css'));

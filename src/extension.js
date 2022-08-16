@@ -12,48 +12,49 @@ const vscode = require('vscode');
 	
 	linkings.purgeLinkings(context);
 
-	let singleAnswerSetCommand = vscode.commands.registerCommand('asp-language-support-dlv2.computeSingleAnswerSet', function () {
+	context.subscriptions.push(vscode.commands.registerCommand('asp-language-support-dlv2.computeSingleAnswerSet', function () {
 		grouding_solving.computeSingleAnswerSet(context);
-	});
-
-	let allAnswerSetsCommand = vscode.commands.registerCommand('asp-language-support-dlv2.computeAllAnswerSets', function () {
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('asp-language-support-dlv2.computeAllAnswerSets', function () {
 		grouding_solving.computeAllAnswerSets(context);
-	});
-
-	let groundProgramCommand = vscode.commands.registerCommand('asp-language-support-dlv2.computeGroundProgram', function () {
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('asp-language-support-dlv2.computeGroundProgram', function () {
 		grouding_solving.computeGroundProgram(context);
-	})
-
-	let linkFilesCommand = vscode.commands.registerCommand("asp-language-support-dlv2.linkFiles", function () {
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.linkFiles", function () {
 		linkings.linkFiles(context);
-	});
-
-	let unlinkFilesCommand = vscode.commands.registerCommand("asp-language-support-dlv2.unlinkFiles", function () {
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.unlinkFiles", function () {
 		linkings.unlinkFiles(context);
-	});
-
-	let disbandPoolCommand = vscode.commands.registerCommand("asp-language-support-dlv2.disbandPool", function () {
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.disbandPool", function () {
 		linkings.disbandPool(context);
-	});
-
-	let viewAllPoolsCommand = vscode.commands.registerCommand("asp-language-support-dlv2.viewAllPools", function () {
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.viewAllPools", function () {
 		linkings.viewAllPools(context);
-	});
-
-	let viewCurrentFilePoolCommand = vscode.commands.registerCommand("asp-language-support-dlv2.viewCurrentFilePool", function () {
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.viewCurrentFilePool", function () {
 		linkings.viewCurrentFilePool(context);
-	});
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.manageCustomExternalAtoms", function () {
+		vscode.workspace.openTextDocument(context.asAbsolutePath("external-atoms.py")).then((document) => {
+			vscode.window.showTextDocument(document);
+		}, (error) => {
+			vscode.window.showErrorMessage("An error occurred while opening file external-atoms.py: " + error);
+		});
+	}));
+
 
 	context.subscriptions.push(vscode.window.registerWebviewViewProvider("asp-language-support-dlv2.interface", advancedOptions.getWebviewViewProvider(context)));
-	context.subscriptions.push(allAnswerSetsCommand);
-	context.subscriptions.push(singleAnswerSetCommand);
-	context.subscriptions.push(groundProgramCommand);
-	context.subscriptions.push(linkFilesCommand);
-	context.subscriptions.push(unlinkFilesCommand);
-	context.subscriptions.push(disbandPoolCommand);
-	context.subscriptions.push(viewAllPoolsCommand);
-	context.subscriptions.push(viewCurrentFilePoolCommand);
-	context.subscriptions.push(vscode.languages.registerCompletionItemProvider('asp', autocomplete.getASPCompletionItemProvider(context), '#', '&'));
+
+	let aspCompletionItemProvider = autocomplete.getASPCompletionItemProvider(context);
+	let externalAtomsFileWatcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(context.asAbsolutePath("."), "external-atoms.py"));
+	externalAtomsFileWatcher.onDidChange(() => {
+		aspCompletionItemProvider.refreshCustomExternalAtoms(context);
+	});
+
+	context.subscriptions.push(vscode.languages.registerCompletionItemProvider('asp', aspCompletionItemProvider, '#', '&'));
+	context.subscriptions.push(externalAtomsFileWatcher);
 }
 
 function deactivate() {}	
