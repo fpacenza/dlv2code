@@ -47,13 +47,14 @@ const vscode = require('vscode');
 
 	context.subscriptions.push(vscode.window.registerWebviewViewProvider("asp-language-support-dlv2.interface", advancedOptions.getWebviewViewProvider(context)));
 
-	let aspCompletionItemProvider = autocomplete.getASPCompletionItemProvider(context);
+	let aspIntellisenseProvider = autocomplete.getASPIntellisenseProvider(context);
 	let externalAtomsFileWatcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(context.asAbsolutePath("."), "external-atoms.py"));
 	externalAtomsFileWatcher.onDidChange(() => {
-		aspCompletionItemProvider.refreshCustomExternalAtoms(context);
+		aspIntellisenseProvider.refreshCustomExternalAtoms(context);
 	});
 
-	context.subscriptions.push(vscode.languages.registerCompletionItemProvider('asp', aspCompletionItemProvider, '#', '&'));
+	context.subscriptions.push(vscode.languages.registerCompletionItemProvider('asp', aspIntellisenseProvider, '#', '&'));
+	context.subscriptions.push(vscode.languages.registerHoverProvider("asp", aspIntellisenseProvider));
 	context.subscriptions.push(externalAtomsFileWatcher);
 }
 

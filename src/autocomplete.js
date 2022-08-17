@@ -1,19 +1,21 @@
 const vscode = require('vscode');
 const fs = require('fs');
 
-//Returns a completion item provider that manages intellisense for directives, aggregates, default and custom external atoms
-function getASPCompletionItemProvider(context) {
+//Returns a provider that manages intellisense for directives, aggregates, default and custom external atoms
+function getASPIntellisenseProvider(context) {
     return {
         autocompleteDict: readAutocompleteDict(context),
         customExternalAtoms: readCustomExternalAtoms(context),
         //Called when the external atoms file is modified to get the updated version
-        refreshCustomExternalAtoms:function(context) {
+        refreshCustomExternalAtoms: function(context) {
             this.customExternalAtoms = readCustomExternalAtoms(context);
         },
-		provideCompletionItems:function(document, position, token, context) {
+
+        //Provides autocomplete
+		provideCompletionItems: function(document, position, token, context) {
             let completionItems = [];
 
-            //Checks if the text being inserted is after a trigger character
+            //Checks if the text being inserted is after a trigger character (# or &)
             let triggerCharacter;
             let line = document.lineAt(position);
             let character = position.character - 1;
@@ -27,6 +29,7 @@ function getASPCompletionItemProvider(context) {
                 --character;
             }
 
+            //If the trigger character is found it provides every completion item associated with that character
             if(triggerCharacter) {
                 function registerAutcompleteEntry(elem) {
                     completionItems.push(new vscode.CompletionItem(elem.label, vscode.CompletionItemKind.Method));
@@ -35,14 +38,14 @@ function getASPCompletionItemProvider(context) {
                     completionItems[completionItems.length - 1].documentation = new vscode.MarkdownString(elem.documentation);
                 }
 
-                this.autocompleteDict[triggerCharacter].forEach(elem => {
+                for(const elem of Object.values(this.autocompleteDict[triggerCharacter])) {
                     registerAutcompleteEntry(elem);
-                });
+                }
 
                 if(triggerCharacter === '&') {
-                    this.customExternalAtoms.forEach(elem => {
+                    for(const elem of Object.values(this.customExternalAtoms)) {
                         registerAutcompleteEntry(elem);
-                    })
+                    }
                 }
             }
             else {
@@ -52,7 +55,46 @@ function getASPCompletionItemProvider(context) {
             }
 
             return completionItems;
-		}
+		},
+
+        //Provides details on hover
+        provideHover: function(document, position, token) {
+
+            //Checks if the text the cursor is on is after a trigger character (# or &)
+            let triggerCharacter;
+            let line = document.lineAt(position);
+            let character = position.character - 1;
+            let validCharacters = /[a-zA-Z0-9_#&]/
+
+            while(character >= 0 && validCharacters.test(line.text[character])) {
+                if(line.text[character] === '#' || line.text[character] === '&') {
+                    triggerCharacter = line.text[character];
+                    break;
+                }
+                --character;
+            }
+
+            //If the trigger character is found it finds the entire word after the character and provides hover details for that word if there exists a completion item for that word
+            if(triggerCharacter) {
+                let start = character;
+                let end = position.character;
+    
+                while(end < line.text.length && validCharacters.test(line.text[end])) {
+                    ++end;
+                }
+                let hoverWord = line.text.substring(start, end);
+
+                if(hoverWord in this.autocompleteDict[triggerCharacter]) {
+                    let hoverElement = this.autocompleteDict[triggerCharacter][hoverWord];
+                    return new vscode.Hover([hoverElement.detail, hoverElement.documentation]);
+                }
+                
+                if(triggerCharacter === '&' && hoverWord in this.customExternalAtoms) {
+                    let hoverElement = this.customExternalAtoms[hoverWord];
+                    return new vscode.Hover([hoverElement.detail, hoverElement.documentation]);
+                }
+            }
+        }
 	}
 }
 
@@ -68,9 +110,9 @@ function readAutocompleteDict(context) {
     return autocompleteDict;
 }
 
-//Reads and parses the file external-atoms.py and returns an array or undefined if it failed to read the file
+//Reads and parses the file external-atoms.py and returns a dictionary or undefined if it failed to read the file
 function readCustomExternalAtoms(context) {
-    let customExternalAtoms = [];
+    let customExternalAtoms = {};
     let externalAtomsFile;
     try {
         externalAtomsFile = fs.readFileSync(context.asAbsolutePath('external-atoms.py'), 'utf-8');
@@ -96,12 +138,17 @@ function readCustomExternalAtoms(context) {
 
         let documentation = match[1].split("\n").map(line => line.substring(1)).join("\n");
 
-        customExternalAtoms.push({"label": match[2], "snippet": snippet, "detail": detail, "documentation": documentation});
+        customExternalAtoms['&' + match[2]] = {
+            "label": match[2], 
+            "snippet": snippet, 
+            "detail": detail, 
+            "documentation": documentation
+        };
     }
 
     return customExternalAtoms;
 }
 
 module.exports = {
-    getASPCompletionItemProvider
+    getASPIntellisenseProvider
 }
