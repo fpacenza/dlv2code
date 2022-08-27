@@ -52,7 +52,8 @@ function run() {
         optionsValues.push(option.firstChild.value)
     });
 
-    let message = optionsValues;
-
-    vscode.postMessage(message);
+    vscode.postMessage({
+        options: optionsValues,
+        useCustomSolver: document.querySelector("#use-different-solver").checked
+    });
 }

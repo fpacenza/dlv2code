@@ -1,4 +1,6 @@
 const grouding_solving = require('./grounding-solving.js');
+const util = require('./util.js');
+const fs = require('fs');
 const vscode = require('vscode');
 
 //Returns a WebviewViewProvider that manages the advanced options webview
@@ -8,7 +10,30 @@ function getWebviewViewProvider(context) {
             thisWebviewView.webview.options={enableScripts:true}
             thisWebviewView.webview.html = getContentForWebview(thisWebviewView.webview, context.extensionUri);
 			thisWebviewView.webview.onDidReceiveMessage(message => {
-				grouding_solving.runDLV2(context, message);
+
+				let options = [];
+
+				if(message.useCustomSolver) {
+					let config = util.readConfigFile(context);
+
+					if(!config['pathToCustomSolver']) {
+						vscode.window.showErrorMessage("No custom solver specified in the file config.json");
+						return;
+					}
+
+					if(!fs.existsSync(config['pathToCustomSolver'])) {
+						vscode.window.showErrorMessage("The custom solver path specified in the file config.json does not exist.");
+						return;
+					}
+
+					options = ["--mode=idlv", "| " + util.escapeSpaces(config.pathToCustomSolver)];
+					options.push(message.options);
+				}
+				else {
+					options = message.options;
+				}
+
+				grouding_solving.runDLV2(context, options);
 			});
         }
     };
@@ -43,9 +68,12 @@ function getContentForWebview(webview, extensionUri) {
 
 			<div id="options"></div>
 
-			<button id="run-button" class="container-item"><i class="fas fa-play" id="play-icon"></i>Run</button>
+			<div id="different-solver">	
+				<input type="checkbox" id="use-different-solver"></input>
+				<label for="use-different-solver">Use custom solver (specify in config file)</label>
+			</div>
 
-			<div id="error"></div>
+			<button id="run-button" class="container-item"><i class="fas fa-play" id="play-icon"></i>Run</button>
 
 			<script src="${scriptMainUri}"></script>
 		</div>

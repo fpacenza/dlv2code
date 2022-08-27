@@ -30,6 +30,7 @@
     margin: 5px;
 }
 
-#error {
-    color: red;
+#different-solver {
+    display: flex;
+    align-items: center;
 }

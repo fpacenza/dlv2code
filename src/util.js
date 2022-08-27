@@ -30,7 +30,26 @@ function readConfigFile(context) {
 	return config;
 }
 
+//Escapes the spaces in a specified path based on the os
+function escapeSpaces(path) {
+	switch(process.platform) {
+		case "win32":
+			path = path.replace(/ /g, "` ");
+			break;
+
+		case "darwin":
+			path = path.replace(/ /g, "\\ ");
+			break;
+		
+		default:
+			path = path.replace(/ /g, "\\ ");
+			break;
+	}
+	return path;
+}
+
 module.exports = {
     checkCurrentFile,
-	readConfigFile
+	readConfigFile,
+	escapeSpaces
 }	

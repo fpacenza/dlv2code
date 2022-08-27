@@ -29,7 +29,7 @@ function runDLV2(context, options) {
 	//Uses default executable only if custom executable is not specified or is missing
 	if(pathToDLV2 && pathToDLV2 !== "") {
 		if(!fs.existsSync(pathToDLV2)) {
-			vscode.window.showWarningMessage("The path specified in the file config.json does not exist. Using default DLV2 executable");
+			vscode.window.showWarningMessage("The dlv2 path specified in the file config.json does not exist. Using default DLV2 executable");
 			pathToDLV2 = getPathToDLV2(context);
 		}
 	}
@@ -40,7 +40,7 @@ function runDLV2(context, options) {
 	//Makes dlv2 file executable
 	fs.chmodSync(pathToDLV2, "755");
 	
-	pathToDLV2 = escapeSpaces(pathToDLV2);
+	pathToDLV2 = util.escapeSpaces(pathToDLV2);
 
 	//Runs the DLV2 executable in the terminal
 	let terminal = vscode.window.activeTerminal;
@@ -81,24 +81,6 @@ function getPathToDLV2(context) {
 			break;
 	}
 	return pathToDLV2;
-}
-
-//Escapes the spaces in a specified path based on the os
-function escapeSpaces(path) {
-	switch(process.platform) {
-		case "win32":
-			path = path.replace(/ /g, "` ");
-			break;
-
-		case "darwin":
-			path = path.replace(/ /g, "\\ ");
-			break;
-		
-		default:
-			path = path.replace(/ /g, "\\ ");
-			break;
-	}
-	return path;
 }
 
 module.exports = {
