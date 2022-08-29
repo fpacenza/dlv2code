@@ -73,6 +73,12 @@
 				"title": "Manage custom external atoms",
 				"category": "ASP",
 				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
+				"command": "asp-language-support-dlv2.manageConfigFile",
+				"title": "Manage configuration file",
+				"category": "ASP",
+				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
 			}
 		],
 		"keybindings":[
@@ -129,6 +135,12 @@
 				"key": "ctrl+alt+e",
 				"mac": "cmd+alt+e",
 				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+			},
+			{
+				"command": "asp-language-support-dlv2.manageConfigFile",
+				"key": "ctrl+alt+o",
+				"mac": "cmd+alt+o",
+				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
 			}
 		],
 		"menus": {
@@ -145,7 +157,7 @@
 				},
 				{
 					"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv",
-					"command": "asp-language-support-dlv2.manageCustomExternalAtoms",
+					"submenu": "asp-language-support-dlv2.other",
 					"group": "main@3"
 				}
 			],
@@ -181,6 +193,14 @@
 					"command": "asp-language-support-dlv2.disbandPool",
 					"group": "linkings@5"
 				}
+			],
+			"asp-language-support-dlv2.other": [
+				{
+					"command": "asp-language-support-dlv2.manageCustomExternalAtoms"
+				},
+				{
+					"command": "asp-language-support-dlv2.manageConfigFile"
+				}
 			]
 		},
 		"submenus": [
@@ -191,6 +211,10 @@
 			{
 				"id": "asp-language-support-dlv2.linkings",
 				"label": "ASP > Linking"
+			},
+			{
+				"id": "asp-language-support-dlv2.other",
+				"label": "ASP > Other"
 			}
 		],
 		"views": {

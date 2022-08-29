@@ -36,6 +36,13 @@ const vscode = require('vscode');
 	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.viewCurrentFilePool", function () {
 		linkings.viewCurrentFilePool(context);
 	}));
+	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.manageConfigFile", function () {
+		vscode.workspace.openTextDocument(context.asAbsolutePath("config.json")).then((document) => {
+			vscode.window.showTextDocument(document);
+		}, (error) => {
+			vscode.window.showErrorMessage("An error occurred while opening file config.json: " + error);
+		});
+	}));
 	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.manageCustomExternalAtoms", function () {
 		vscode.workspace.openTextDocument(context.asAbsolutePath("external-atoms.py")).then((document) => {
 			vscode.window.showTextDocument(document);
@@ -43,7 +50,6 @@ const vscode = require('vscode');
 			vscode.window.showErrorMessage("An error occurred while opening file external-atoms.py: " + error);
 		});
 	}));
-
 
 	context.subscriptions.push(vscode.window.registerWebviewViewProvider("asp-language-support-dlv2.interface", advancedOptions.getWebviewViewProvider(context)));
 
