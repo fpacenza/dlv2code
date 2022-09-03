@@ -26,8 +26,10 @@ function getWebviewViewProvider(context) {
 						return;
 					}
 
-					options = ["--mode=idlv", "| " + util.escapeSpaces(config.pathToCustomSolver)];
-					options.push(message.options);
+
+					fs.chmodSync(config['pathToCustomSolver'], "755");
+					options = ["--mode=idlv", "| " + util.escapeSpaces(config['pathToCustomSolver'])];
+					options = options.concat(message.options);
 				}
 				else {
 					options = message.options;
