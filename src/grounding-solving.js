@@ -21,7 +21,7 @@ function runDLV2(context, options) {
 	}
 
 	//If a file for custom external atoms is specified for the current workspace, it is given to dlv2
-	let externalAtomsFile = path.join(vscode.workspace.workspaceFolders[0].uri.path, "external-atoms.py");
+	let externalAtomsFile = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "external-atoms.py");
 	if(fs.existsSync(externalAtomsFile)) {
 		linkedFiles.push(externalAtomsFile);
 	}

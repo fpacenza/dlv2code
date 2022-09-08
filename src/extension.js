@@ -48,7 +48,7 @@ const path = require('path');
 	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.manageCustomExternalAtoms", function () {
 		
 		//If a file for custom external atoms does not already exist in the current workspace, it is created
-		let externalAtomsFile = path.join(vscode.workspace.workspaceFolders[0].uri.path, "external-atoms.py");
+		let externalAtomsFile = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "external-atoms.py");
 		if(!fs.existsSync(externalAtomsFile)) {
 			let template = fs.readFileSync(context.asAbsolutePath('external-atoms-template.py'), 'utf-8');
 			fs.writeFileSync(externalAtomsFile, template, 'utf-8');
@@ -63,7 +63,7 @@ const path = require('path');
 	context.subscriptions.push(vscode.languages.registerCompletionItemProvider('asp', aspIntellisenseProvider, '#', '&'));
 	context.subscriptions.push(vscode.languages.registerHoverProvider("asp", aspIntellisenseProvider));
 
-	let externalAtomsFileWatcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.workspace.workspaceFolders[0].uri.path, "external-atoms.py"));
+	let externalAtomsFileWatcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.workspace.workspaceFolders[0].uri.fsPath, "external-atoms.py"));
 	externalAtomsFileWatcher.onDidChange(() => {
 		aspIntellisenseProvider.refreshCustomExternalAtoms(context);
 	});

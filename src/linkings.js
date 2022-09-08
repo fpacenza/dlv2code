@@ -10,7 +10,7 @@ const path = require('path');
 function readLinkings(context) {
 	let linkings = {};
 
-	let linkingsFile = path.join(vscode.workspace.workspaceFolders[0].uri.path, "linkings.json");
+	let linkingsFile = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "linkings.json");
 	if(!fs.existsSync(linkingsFile)) {
 		linkingsFile = context.asAbsolutePath("linkings-template.json");		
 	}
@@ -30,7 +30,7 @@ function readLinkings(context) {
 //Writes the linkings dictionary in the file linkings.json
 function writeLinkings(context, linkings) {
 
-	let linkingsFile = path.join(vscode.workspace.workspaceFolders[0].uri.path, "linkings.json");
+	let linkingsFile = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "linkings.json");
 	try {
 		fs.writeFileSync(linkingsFile, JSON.stringify(linkings), 'utf-8');
 	} catch (error) {
@@ -89,7 +89,7 @@ function purgeLinkings(context, filepath) {
 		}
 	}
 
-	if(fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.path, "linkings.json"))) {
+	if(fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "linkings.json"))) {
 		writeLinkings(context, linkings);
 	}
 

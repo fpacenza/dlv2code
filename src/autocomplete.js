@@ -114,7 +114,7 @@ function readAutocompleteDict(context) {
 //Reads and parses the file external-atoms.py (if it exists in the current workspace) and returns a dictionary
 function readCustomExternalAtoms(context) {
     let customExternalAtoms = {};
-    let externalAtomsFile = path.join(vscode.workspace.workspaceFolders[0].uri.path, "external-atoms.py");
+    let externalAtomsFile = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "external-atoms.py");
 
     if(!fs.existsSync(externalAtomsFile)) {
         return customExternalAtoms;
