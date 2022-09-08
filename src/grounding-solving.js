@@ -2,6 +2,7 @@ const util = require('./util.js');
 const linkings = require('./linkings.js');
 const fs = require('fs');
 const vscode = require('vscode');
+const path = require('path');
 
 //Calls the DLV2 executable on the currently active file and on the files linked to it with the specified options
 function runDLV2(context, options) {
@@ -18,10 +19,16 @@ function runDLV2(context, options) {
 	if(pathToFile in linkingsDict) {
 		linkedFiles = reverseLinkings[linkingsDict[pathToFile]];
 	}
+
+	//If a file for custom external atoms is specified for the current workspace, it is given to dlv2
+	let externalAtomsFile = path.join(vscode.workspace.workspaceFolders[0].uri.path, "external-atoms.py");
+	if(fs.existsSync(externalAtomsFile)) {
+		linkedFiles.push(externalAtomsFile);
+	}
+
 	linkedFiles.forEach((file, index) =>{
 		linkedFiles[index] = '"' + file + '"';
 	})
-	linkedFiles.push('"' + context.asAbsolutePath('external-atoms.py') + '"');
 
 	let config = util.readConfigFile(context);
 	let pathToDLV2 = config['pathToDLV2'];

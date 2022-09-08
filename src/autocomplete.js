@@ -1,5 +1,6 @@
 const vscode = require('vscode');
 const fs = require('fs');
+const path = require('path');
 
 //Returns a provider that manages intellisense for directives, aggregates, default and custom external atoms
 function getASPIntellisenseProvider(context) {
@@ -98,31 +99,38 @@ function getASPIntellisenseProvider(context) {
 	}
 }
 
-//Reads the file autocomplete.json and returns a dictionary or undefined if it failed to read the file
+//Reads the file autocomplete.json and returns a dictionary
 function readAutocompleteDict(context) {
-    let autocompleteDict;
+    let autocompleteDict = {};
 	try {
         autocompleteDict = JSON.parse(fs.readFileSync(context.asAbsolutePath('autocomplete.json'), 'utf-8'));
     } catch (error) {
         vscode.window.showErrorMessage("An error occurred while reading the file autocomplete.json: " + error);
-        return;
+        return autocompleteDict;
     }	
     return autocompleteDict;
 }
 
-//Reads and parses the file external-atoms.py and returns a dictionary or undefined if it failed to read the file
+//Reads and parses the file external-atoms.py (if it exists in the current workspace) and returns a dictionary
 function readCustomExternalAtoms(context) {
     let customExternalAtoms = {};
-    let externalAtomsFile;
+    let externalAtomsFile = path.join(vscode.workspace.workspaceFolders[0].uri.path, "external-atoms.py");
+
+    if(!fs.existsSync(externalAtomsFile)) {
+        return customExternalAtoms;
+    }
+
+    let externalAtoms;
+
     try {
-        externalAtomsFile = fs.readFileSync(context.asAbsolutePath('external-atoms.py'), 'utf-8');
+        externalAtoms = fs.readFileSync(externalAtomsFile, 'utf-8');
     } catch (error) {
         vscode.window.showErrorMessage("An error occurred while reading the file external-atoms.py: " + error);
-        return;
+        return customExternalAtoms;
     }
 
     //The following regex captures function definitions and eventual commented lines preceding them (they are considered documentation)
-    let matches = externalAtomsFile.matchAll(/((?:#.*\n)*)def\s+(\w+)\s*\((.*?)\)/g);
+    let matches = externalAtoms.matchAll(/((?:#.*\n)*)def\s+(\w+)\s*\((.*?)\)/g);
     
     //For each function definition, creates and object in the same form as the objects in the file autocomplete.json
     for(const match of matches) {

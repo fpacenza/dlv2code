@@ -1,16 +1,23 @@
 const util = require('./util.js');
 const vscode = require('vscode');
 const fs = require('fs');
+const path = require('path');
 
 //Reads the file linkings.json and returns a dictionary or undefined if it failed to read the file
 //linkings.json has entries in the form "path_to_file" : "pool_n" where n is a number identifying the pool of linked files
 //linkings.json has an entry "poolId" keeping track of the last used number for the pools
 //linkings.json has an entry "reverseLinkings" containing a dictionary with entries in the form "pool_n" : ["file1", ...]	
 function readLinkings(context) {
+	let linkings = {};
+
+	let linkingsFile = path.join(vscode.workspace.workspaceFolders[0].uri.path, "linkings.json");
+	if(!fs.existsSync(linkingsFile)) {
+		linkingsFile = context.asAbsolutePath("linkings-template.json");		
+	}
+
 	let linkingsJSON;
-	let linkings;
 	try {
-		linkingsJSON = fs.readFileSync(context.asAbsolutePath('linkings.json'), 'utf-8');
+		linkingsJSON = fs.readFileSync(linkingsFile, 'utf-8');
 		linkings = JSON.parse(linkingsJSON);
 	} catch (error) {
 		vscode.window.showErrorMessage("An error occurred while reading the file linkings.json: " + error);
@@ -22,18 +29,19 @@ function readLinkings(context) {
 
 //Writes the linkings dictionary in the file linkings.json
 function writeLinkings(context, linkings) {
+
+	let linkingsFile = path.join(vscode.workspace.workspaceFolders[0].uri.path, "linkings.json");
 	try {
-		//First writes to temp file and then renames it to avoid corruption due to crashes
-		fs.writeFileSync(context.asAbsolutePath('temp_linkings.json'), JSON.stringify(linkings), 'utf-8');
-		fs.renameSync(context.asAbsolutePath("temp_linkings.json"), context.asAbsolutePath("linkings.json"));
+		fs.writeFileSync(linkingsFile, JSON.stringify(linkings), 'utf-8');
 	} catch (error) {
-		vscode.window.showErrorMessage("An error occurred while trying to modify the file linkings.json: " + error);
+		vscode.window.showErrorMessage("An error occurred while trying to write on the file linkings.json: " + error);
 	}
 }
 
 //Remove any non-existent file from the file linkings.json and returns the purged dictionary or undefined if it failed reading
 //If a filepath is passed as an argument, only applies the function to the pool containing the filepath, otherwise on all pools
 function purgeLinkings(context, filepath) {
+
 	let linkings = readLinkings(context);
 	if(!linkings) return;
 
@@ -76,12 +84,14 @@ function purgeLinkings(context, filepath) {
 		}
 	}
 	else {
-		for(const [pool, files] of Object.entries(reverseLinkings)) {
+		for(const pool of Object.keys(reverseLinkings)) {
 			purgePool(pool);
 		}
 	}
 
-	writeLinkings(context, linkings);
+	if(fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.path, "linkings.json"))) {
+		writeLinkings(context, linkings);
+	}
 
 	return linkings;
 }
@@ -153,10 +163,10 @@ async function linkFiles(context) {
 	}
 	else {
 		//Moves every linked file from its pool to the biggest pool
-		for (const [pool, filesToMerge] of Object.entries(poolsToMerge)) {
+		for (const pool of Object.keys(poolsToMerge)) {
 			if(pool != biggestPool) {
 
-				filesToMerge.forEach(file => {
+				reverseLinkings[pool].forEach(file => {
 					if(file != pathToCurrentFile) {
 						linkings[file] = biggestPool;
 						reverseLinkings[biggestPool].push(file);

@@ -24,61 +24,61 @@
 				"command": "asp-language-support-dlv2.computeSingleAnswerSet",
 				"title": "Compute a single Answer Set",
 				"category": "ASP",
-				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"enablement": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.computeAllAnswerSets",
 				"title": "Compute all Answer Sets",
 				"category": "ASP",
-				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"enablement": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.computeGroundProgram",
 				"title": "Compute ground program",
 				"category": "ASP",
-				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"enablement": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.viewAllPools",
 				"title": "View all pools of linked files",
 				"category": "ASP",
-				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"enablement": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.viewCurrentFilePool",
 				"title": "View the current file's pool of linked files",
 				"category": "ASP",
-				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"enablement": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.linkFiles",
 				"title": "Link current file to others",
 				"category": "ASP",
-				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"enablement": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.unlinkFiles",
 				"title": "Unlink current file from all others",
 				"category": "ASP",
-				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"enablement": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.disbandPool",
 				"title": "Disband the current file's pool of linked files",
 				"category": "ASP",
-				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"enablement": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.manageCustomExternalAtoms",
 				"title": "Manage custom external atoms",
 				"category": "ASP",
-				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"enablement": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.manageConfigFile",
 				"title": "Manage configuration file",
 				"category": "ASP",
-				"enablement": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"enablement": "resourceLangId == asp"
 			}
 		],
 		"keybindings":[
@@ -86,77 +86,77 @@
 				"command": "asp-language-support-dlv2.computeSingleAnswerSet",
 				"key": "ctrl+alt+s",
 				"mac": "cmd+alt+s",
-				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"when": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.computeAllAnswerSets",
 				"key": "ctrl+alt+a",
 				"mac": "cmd+alt+a",
-				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"when": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.computeGroundProgram",
 				"key": "ctrl+alt+g",
 				"mac": "cmd+alt+g",
-				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"when": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.viewAllPools",
 				"key": "ctrl+alt+v",
 				"mac": "cmd+alt+v",
-				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"when": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.viewCurrentFilePool",
 				"key": "ctrl+alt+c",
 				"mac": "cmd+alt+c",
-				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"when": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.linkFiles",
 				"key": "ctrl+alt+l",
 				"mac": "cmd+alt+l",
-				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"when": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.unlinkFiles",
 				"key": "ctrl+alt+u",
 				"mac": "cmd+alt+u",
-				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"when": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.disbandPool",
 				"key": "ctrl+alt+k",
 				"mac": "cmd+alt+k",
-				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"when": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.manageCustomExternalAtoms",
 				"key": "ctrl+alt+e",
 				"mac": "cmd+alt+e",
-				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"when": "resourceLangId == asp"
 			},
 			{
 				"command": "asp-language-support-dlv2.manageConfigFile",
 				"key": "ctrl+alt+o",
 				"mac": "cmd+alt+o",
-				"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+				"when": "resourceLangId == asp"
 			}
 		],
 		"menus": {
 			"editor/context": [
 				{
-					"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv",
+					"when": "resourceLangId == asp",
 					"submenu": "asp-language-support-dlv2.solvingAndGrounding",
 					"group": "main@1"
 				},
 				{
-					"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv",
+					"when": "resourceLangId == asp",
 					"submenu": "asp-language-support-dlv2.linkings",
 					"group": "main@2"
 				},
 				{
-					"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv",
+					"when": "resourceLangId == asp",
 					"submenu": "asp-language-support-dlv2.other",
 					"group": "main@3"
 				}
@@ -223,7 +223,7 @@
 					"type": "webview",
 					"id": "asp-language-support-dlv2.interface",
 					"name": "DLV2 Advanced options",
-					"when": "resourceExtname == .lp || resourceExtname == .asp || resourceExtname == .dlv"
+					"when": "resourceLangId == asp"
 				}
 			]
 		},

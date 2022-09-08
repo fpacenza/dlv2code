@@ -8,8 +8,8 @@ function checkCurrentFile() {
 		return false;
 	}
 
-	if(!(/.*\.(lp|asp|dlv)$/.test(vscode.window.activeTextEditor.document.fileName))) {
-		vscode.window.showErrorMessage("The file with focus (" + vscode.window.activeTextEditor.document.fileName + ") is not a .asp, .lp or .dlv file");
+	if(vscode.window.activeTextEditor.document.languageId != "asp") {
+		vscode.window.showErrorMessage("The file with focus (" + vscode.window.activeTextEditor.document.fileName + ") is not an asp file");
 		return false;
 	}
 
