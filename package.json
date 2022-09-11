@@ -1,7 +1,7 @@
 {
 	"name": "asp-language-support-dlv2",
 	"displayName": "ASP Language Support for DLV2 System",
-	"description": "An extension for Answer Set Programming and DLV2 System",
+	"description": "An extension for Answer Set Programming using the DLV2 System",
 	"version": "0.0.1",
     "publisher": "RiccardoCarnevali", 
     "engines": {
