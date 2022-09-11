@@ -3,7 +3,7 @@
 	"displayName": "ASP Language Support for DLV2 System",
 	"description": "An extension for Answer Set Programming and DLV2 System",
 	"version": "0.0.1",
-    "publisher": "Riccardo Carnevali", 
+    "publisher": "RiccardoCarnevali", 
     "engines": {
         "vscode": "^1.69.0"
     },
