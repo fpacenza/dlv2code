@@ -2,17 +2,17 @@
 	"name": "asp-language-support-dlv2",
 	"displayName": "ASP Language Support for DLV2 System",
 	"description": "An extension for Answer Set Programming using the DLV2 System",
-	"version": "0.0.1",
-    "publisher": "RiccardoCarnevali", 
-    "engines": {
-        "vscode": "^1.69.0"
-    },
-    "author": {
-        "name": "Riccardo Carnevali"
-      },
-    "categories": [
-        "Programming Languages"
-    ],
+	"version": "0.1.0",
+	"publisher": "RiccardoCarnevali",
+	"engines": {
+		"vscode": "^1.69.0"
+	},
+	"author": {
+		"name": "Riccardo Carnevali"
+	},
+	"categories": [
+		"Programming Languages"
+	],
 	"activationEvents": [
 		"onLanguage:asp",
 		"onView:asp-language-support-dlv2.interface"
@@ -81,7 +81,7 @@
 				"enablement": "resourceLangId == asp"
 			}
 		],
-		"keybindings":[
+		"keybindings": [
 			{
 				"command": "asp-language-support-dlv2.computeSingleAnswerSet",
 				"key": "ctrl+alt+s",
@@ -206,7 +206,7 @@
 		"submenus": [
 			{
 				"id": "asp-language-support-dlv2.solvingAndGrounding",
-				"label" : "ASP > Solving and grounding"
+				"label": "ASP > Solving and grounding"
 			},
 			{
 				"id": "asp-language-support-dlv2.linkings",
@@ -227,21 +227,33 @@
 				}
 			]
 		},
-        "languages": [{
-            "id": "asp",
-            "aliases": ["asp", "ASP-Core-2", "Answer Set Programming"],
-            "extensions": [".lp",".asp",".dlv"],
-            "configuration": "./language-configuration.json",
-			"icon": {
-				"light": "./images/icon.png",
-				"dark": "./images/icon.png"
+		"languages": [
+			{
+				"id": "asp",
+				"aliases": [
+					"asp",
+					"ASP-Core-2",
+					"Answer Set Programming"
+				],
+				"extensions": [
+					".lp",
+					".asp",
+					".dlv"
+				],
+				"configuration": "./language-configuration.json",
+				"icon": {
+					"light": "./images/icon.png",
+					"dark": "./images/icon.png"
+				}
 			}
-        }],
-        "grammars": [{
-            "language": "asp",
-            "scopeName": "source.asp",
-            "path": "./syntaxes/asp.tmLanguage.json"
-        }]
+		],
+		"grammars": [
+			{
+				"language": "asp",
+				"scopeName": "source.asp",
+				"path": "./syntaxes/asp.tmLanguage.json"
+			}
+		]
 	},
 	"scripts": {
 		"lint": "eslint .",
@@ -259,14 +271,14 @@
 		"typescript": "^4.7.4",
 		"@vscode/test-electron": "^2.1.5"
 	},
-    "license": "SEE LICENSE IN LICENSE.txt",
-    "bugs": {
-      "url": "https://github.com/fpacenza/dlv2code/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/fpacenza/dlv2code.git"
-    },
-    "homepage": "https://github.com/fpacenza/dlv2code/blob/main/README.md",
-    "icon": "images/icon.png"
+	"license": "SEE LICENSE IN LICENSE.txt",
+	"bugs": {
+		"url": "https://github.com/fpacenza/dlv2code/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/fpacenza/dlv2code.git"
+	},
+	"homepage": "https://github.com/fpacenza/dlv2code/blob/main/README.md",
+	"icon": "images/icon.png"
 }
