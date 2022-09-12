@@ -63,5 +63,3 @@ Commented lines before the function definition are considered documentation and 
 
 <img src="./images/External atoms file.png" alt="external atoms file" width="800" />
 <img src="./images/External atoms autocomplete.gif" alt="external atoms autocomplete" width="800" />
-
-Although the extension supports the creation of these external atoms, the default version of the DLV2 system bundled with the extension does not recognize them. An appropriate version of the system can be found [here](https://dlv.demacs.unical.it/home) and, once downloaded, its path must be specified in the configuration file
