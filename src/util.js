@@ -16,6 +16,16 @@ function checkCurrentFile() {
 	return true;
 }
 
+function checkWorkspace(showMessage) {
+	if(!(vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length != 0)) {
+		if(showMessage) {
+			vscode.window.showErrorMessage("A workspace must be open to use this functionality");
+		}
+		return false;
+	}
+	return true;
+}
+
 //Reads the file config.json and returns a dictionary or undefined if it failed to read the file
 function readConfigFile(context) {
 	let configJSON;
@@ -50,6 +60,7 @@ function escapeSpaces(path) {
 
 module.exports = {
     checkCurrentFile,
+	checkWorkspace,
 	readConfigFile,
 	escapeSpaces
 }	

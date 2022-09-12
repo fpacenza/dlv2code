@@ -9,10 +9,16 @@ const path = require('path');
 //linkings.json has an entry "reverseLinkings" containing a dictionary with entries in the form "pool_n" : ["file1", ...]	
 function readLinkings(context) {
 	let linkings = {};
+	let linkingsFile;
 
-	let linkingsFile = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "linkings.json");
-	if(!fs.existsSync(linkingsFile)) {
-		linkingsFile = context.asAbsolutePath("linkings-template.json");		
+	if(!util.checkWorkspace()) {
+		linkingsFile = context.asAbsolutePath("linkings-template.json");
+	}
+	else {
+		linkingsFile = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "linkings.json");
+		if(!fs.existsSync(linkingsFile)) {
+			linkingsFile = context.asAbsolutePath("linkings-template.json");		
+		}
 	}
 
 	let linkingsJSON;
@@ -30,7 +36,10 @@ function readLinkings(context) {
 //Writes the linkings dictionary in the file linkings.json
 function writeLinkings(context, linkings) {
 
+	if(!util.checkWorkspace()) return;
+
 	let linkingsFile = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "linkings.json");
+	
 	try {
 		fs.writeFileSync(linkingsFile, JSON.stringify(linkings), 'utf-8');
 	} catch (error) {
@@ -89,7 +98,7 @@ function purgeLinkings(context, filepath) {
 		}
 	}
 
-	if(fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "linkings.json"))) {
+	if(util.checkWorkspace() && fs.existsSync(path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "linkings.json"))) {
 		writeLinkings(context, linkings);
 	}
 

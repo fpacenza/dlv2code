@@ -2,6 +2,7 @@ const linkings = require('./linkings.js');
 const grouding_solving = require('./grounding-solving.js');
 const autocomplete = require('./autocomplete.js');
 const advancedOptions = require('./advancedOptions.js');
+const util = require('./util.js');
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
@@ -24,18 +25,23 @@ const path = require('path');
 		grouding_solving.computeGroundProgram(context);
 	}));
 	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.linkFiles", function () {
+		if(!util.checkWorkspace(true)) return;
 		linkings.linkFiles(context);
 	}));
 	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.unlinkFiles", function () {
+		if(!util.checkWorkspace(true)) return;
 		linkings.unlinkFiles(context);
 	}));
 	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.disbandPool", function () {
+		if(!util.checkWorkspace(true)) return;
 		linkings.disbandPool(context);
 	}));
 	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.viewAllPools", function () {
+		if(!util.checkWorkspace(true)) return;
 		linkings.viewAllPools(context);
 	}));
 	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.viewCurrentFilePool", function () {
+		if(!util.checkWorkspace(true)) return;
 		linkings.viewCurrentFilePool(context);
 	}));
 	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.manageConfigFile", function () {
@@ -47,6 +53,7 @@ const path = require('path');
 	}));
 	context.subscriptions.push(vscode.commands.registerCommand("asp-language-support-dlv2.manageCustomExternalAtoms", function () {
 		
+		if(!util.checkWorkspace(true)) return;
 		//If a file for custom external atoms does not already exist in the current workspace, it is created
 		let externalAtomsFile = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "external-atoms.py");
 		if(!fs.existsSync(externalAtomsFile)) {
@@ -63,17 +70,19 @@ const path = require('path');
 	context.subscriptions.push(vscode.languages.registerCompletionItemProvider('asp', aspIntellisenseProvider, '#', '&'));
 	context.subscriptions.push(vscode.languages.registerHoverProvider("asp", aspIntellisenseProvider));
 
-	let externalAtomsFileWatcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.workspace.workspaceFolders[0].uri.fsPath, "external-atoms.py"));
-	externalAtomsFileWatcher.onDidChange(() => {
-		aspIntellisenseProvider.refreshCustomExternalAtoms(context);
-	});
-	externalAtomsFileWatcher.onDidCreate(() => {
-		aspIntellisenseProvider.refreshCustomExternalAtoms(context);
-	});
-	externalAtomsFileWatcher.onDidDelete(() => {
-		aspIntellisenseProvider.refreshCustomExternalAtoms(context);
-	})
-	context.subscriptions.push(externalAtomsFileWatcher);
+	if(util.checkWorkspace()) {
+		let externalAtomsFileWatcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.workspace.workspaceFolders[0].uri.fsPath, "external-atoms.py"));
+		externalAtomsFileWatcher.onDidChange(() => {
+			aspIntellisenseProvider.refreshCustomExternalAtoms(context);
+		});
+		externalAtomsFileWatcher.onDidCreate(() => {
+			aspIntellisenseProvider.refreshCustomExternalAtoms(context);
+		});
+		externalAtomsFileWatcher.onDidDelete(() => {
+			aspIntellisenseProvider.refreshCustomExternalAtoms(context);
+		})
+		context.subscriptions.push(externalAtomsFileWatcher);	
+	}
 }
 
 function deactivate() {}	
