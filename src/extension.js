@@ -57,8 +57,20 @@ const path = require('path');
 		//If a file for custom external atoms does not already exist in the current workspace, it is created
 		let externalAtomsFile = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, "external-atoms.py");
 		if(!fs.existsSync(externalAtomsFile)) {
-			let template = fs.readFileSync(context.asAbsolutePath('external-atoms-template.py'), 'utf-8');
-			fs.writeFileSync(externalAtomsFile, template, 'utf-8');
+			let template;
+			try {
+				template = fs.readFileSync(context.asAbsolutePath('external-atoms-template.py'), 'utf-8');
+			} catch (error) {
+				vscode.window.showErrorMessage("An error occurred while reading the file external-atoms-template.py: " + error);
+				return;
+			}
+
+			try {
+				fs.writeFileSync(externalAtomsFile, template, 'utf-8');
+			} catch (error) {
+				vscode.window.showErrorMessage("An error occurred while creating the file external-atoms.py: " + error);
+				return;
+			}
 		}
 	
 		vscode.window.showTextDocument(vscode.Uri.file(externalAtomsFile));

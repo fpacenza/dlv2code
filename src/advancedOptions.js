@@ -26,8 +26,18 @@ function getWebviewViewProvider(context) {
 						return;
 					}
 
+					//Makes the solver executable if it is not already
+					try {
+						fs.accessSync(config['pathToCustomSolver'], fs.constants.X_OK)
+					} catch (error) {
+						try {
+							fs.chmodSync(config['pathToCustomSolver'], "755");
+						} catch (error) {
+							vscode.window.showErrorMessage("Could not make the file " + config['pathToCustomSolver'] + " executable, manual change of permissions required");
+							return;
+						} 
+					}
 
-					fs.chmodSync(config['pathToCustomSolver'], "755");
 					options = ["--mode=idlv", "| " + util.escapeSpaces(config['pathToCustomSolver'])];
 					options = options.concat(message.options);
 				}

@@ -46,8 +46,17 @@ function runDLV2(context, options) {
 		pathToDLV2 = getPathToDLV2(context);
 	}
 	
-	//Makes dlv2 file executable
-	fs.chmodSync(pathToDLV2, "755");
+	//Makes dlv2 file executable if it is not already
+	try {
+		fs.accessSync(pathToDLV2, fs.constants.X_OK)
+	} catch (error) {
+		try {
+			fs.chmodSync(pathToDLV2, "755");
+		} catch (error) {
+			vscode.window.showErrorMessage("Could not make the file " + pathToDLV2 + " executable, manual change of permissions required");
+			return;
+		}
+	}
 	
 	pathToDLV2 = util.escapeSpaces(pathToDLV2);
 
