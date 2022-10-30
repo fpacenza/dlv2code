@@ -59,6 +59,18 @@
             "snippet": "max{${1:X} : ${2:p}(${3:X})}",
             "detail": "(aggregate function) #max{terms:body}",
             "documentation": "@param `terms`: A sequence of terms\n\n@param `body`: A sequence of literals\n\n@return The maximum of the values given to the first term in the sequence calculated over all the unique instantiations of the sequence of terms"
+        },
+        "#temp": {
+            "label": "temp",
+            "snippet": "temp ${1:a} :- ${2:l_1}, ${3:l_p}.",
+            "detail": "(stream reasoning) #temp α :- l_1,..., l_b.",
+            "documentation": "@param `α`: A predicate atom of the form p(t1,...,tn) as in ASP-Core-2\n\n@param `l_1,...,l_b`: A conjunction of streaming literals\n\n@return Next rule is identified as temporary rule"
+        },
+        "#trigger_frequency": {
+            "label": "trigger_frequency",
+            "snippet": "trigger_frequency(${1:U_INT}) ${2:a} :- ${3:l_1}, ${4:l_p}.",
+            "detail": "(stream reasoning) #trigger_frequency(U_INT:f) α :- l_1, ..., l_b.",
+            "documentation": "@param `U_INT`: The frequency according to which the rule has to be evaluated. It can be expressed in terms of milliseconds, seconds, minutes or hours by simply indicating `msec`, `sec`, `min` and `hrs` respectively.\n\n@param `α`: A predicate atom of the form p(t1,...,tn) as in ASP-Core-2\n\n@param `l_1,...,l_b`: A conjunction of streaming literals\n\n@return Next rule eill be triggered according to the specified frequency"
         }
     },
     "&": {
